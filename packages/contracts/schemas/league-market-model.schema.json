@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fanta-luminous.local/schemas/league-market-model-v0.2.json",
+  "type": "object",
+  "required": ["schemaVersion", "source", "league", "priceModel"],
+  "properties": {
+    "schemaVersion": {"const": "0.2.0"},
+    "generatedAt": {"type": "string"},
+    "source": {"type": "object"},
+    "league": {"type": "object"},
+    "priceModel": {
+      "type": "object",
+      "required": ["type", "formula", "roles"],
+      "properties": {
+        "type": {"const": "role_specific_linear_regression"},
+        "input": {"type": "string"},
+        "formula": {"type": "string"},
+        "roles": {
+          "type": "object",
+          "required": ["P", "D", "C", "A"],
+          "additionalProperties": {
+            "type": "object",
+            "required": ["intercept", "slope", "mae", "pearsonCorrelation", "residualBands"]
+          }
+        },
+        "limitations": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "liveAdjustments": {"type": "object"},
+    "samplePlayers": {"type": "array"}
+  },
+  "additionalProperties": true
+}

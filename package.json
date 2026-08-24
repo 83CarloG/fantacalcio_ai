@@ -1,0 +1,25 @@
+{
+  "name": "fanta-luminous-platform",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "apps/api",
+    "apps/web-bff",
+    "packages/design-system",
+    "packages/contracts"
+  ],
+  "scripts": {
+    "bootstrap": "bash scripts/bootstrap.sh",
+    "dev:api": "npm --workspace @fanta/api run dev",
+    "dev:web": "npm --workspace @fanta/web-bff run dev",
+    "build:ds": "npm --workspace @fanta/design-system run build",
+    "test:core": "node --test tests/core/*.test.js",
+    "test:api": "npm --workspace @fanta/api run test:unit",
+    "check:architecture": "node scripts/check-luminous-boundaries.js",
+    "check:syntax": "node scripts/check-syntax.js",
+    "verify": "npm run check:architecture && npm run check:syntax && npm run test:core && npm run test:api",
+    "docker:up": "docker compose up --build",
+    "docker:down": "docker compose down"
+  },
+  "engines": {"node": ">=22"}
+}

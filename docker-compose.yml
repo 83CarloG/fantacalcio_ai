@@ -1,0 +1,46 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    environment:
+      API_HOST: 0.0.0.0
+      API_PORT: 3000
+      DATABASE_KIND: sqlite
+      SQLITE_FILE: ./runtime/fanta.sqlite
+      REDIS_URL: redis://redis:6379
+    volumes:
+      - api_runtime:/app/runtime
+    ports: ["3000:3000"]
+    depends_on: [redis]
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    environment:
+      WEB_HOST: 0.0.0.0
+      WEB_PORT: 3001
+      API_BASE_URL: http://api:3000
+    ports: ["3001:3001"]
+    depends_on: [api]
+
+  redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+
+  mysql:
+    image: mysql:8.4
+    profiles: ["mysql"]
+    environment:
+      MYSQL_DATABASE: fanta
+      MYSQL_USER: fanta
+      MYSQL_PASSWORD: fanta
+      MYSQL_ROOT_PASSWORD: root
+    ports: ["3306:3306"]
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  api_runtime:
+  mysql_data:

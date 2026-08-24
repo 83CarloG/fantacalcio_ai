@@ -1,0 +1,27 @@
+{
+  "name": "@fanta/api",
+  "version": "0.1.0",
+  "private": true,
+  "main": "server/server.js",
+  "scripts": {
+    "dev": "node --watch server/server.js",
+    "start": "node server/server.js",
+    "migrate": "node scripts/migrate.js",
+    "seed": "node scripts/seed.js",
+    "import:listone": "node scripts/import-fantacalcio-listone.js",
+    "enrich:fpedia": "node scripts/enrich-fpedia.js",
+    "snapshot:create": "node scripts/create-dataset-snapshot.js",
+    "test:unit": "node --test tests/unit/*.test.js",
+    "report:data-quality": "node scripts/data-quality-report.js",
+    "import:season-stats": "node scripts/import-season-stats.js"
+  },
+  "dependencies": {
+    "@fastify/cors": "^10.0.0",
+    "@fastify/swagger": "^9.0.0",
+    "@fastify/swagger-ui": "^5.0.0",
+    "cheerio": "^1.0.0",
+    "fastify": "^5.0.0",
+    "mysql2": "^3.11.0",
+    "redis": "^4.7.0"
+  }
+}

@@ -1,0 +1,7 @@
+node_modules/
+.env
+runtime/
+coverage/
+apps/*/runtime/
+packages/design-system/dist/
+.DS_Store

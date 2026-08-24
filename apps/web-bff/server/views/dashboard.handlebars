@@ -1,0 +1,14 @@
+<section class="page-heading">
+  <div><p class="eyebrow">Asta 2026/27</p><h1>Dashboard decisionale</h1><p>Valore tecnico, prezzo atteso, rischio e scarsità separati.</p></div>
+</section>
+<section class="stats-grid">
+  <fanta-stat-card label="Giocatori seed" value="{{playerCount}}" trend="neutral"></fanta-stat-card>
+  <fanta-stat-card label="Calibrazione mercato" value="2025/26" trend="neutral"></fanta-stat-card>
+  <fanta-stat-card label="Storico completo" value="1 stagione" trend="warning"></fanta-stat-card>
+</section>
+<section class="panel">
+  <div class="panel__header"><h2>Giocatori campione</h2><a class="panel__link" href="/players">Apri listone completo →</a></div>
+  <table class="data-table"><thead><tr><th>Giocatore</th><th>Squadra</th><th>Ruolo</th></tr></thead><tbody>
+  {{#each players}}<tr><td><a href="/players/{{player_id}}">{{name}}</a></td><td>{{team}}</td><td><fanta-badge tone="{{role}}">{{role}}</fanta-badge></td></tr>{{/each}}
+  </tbody></table>
+</section>

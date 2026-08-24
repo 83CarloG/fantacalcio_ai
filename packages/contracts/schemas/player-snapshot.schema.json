@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fanta-luminous.local/schemas/player-snapshot-v1.1.json",
+  "title": "Player source snapshot",
+  "type": "object",
+  "required": ["schemaVersion", "snapshotId", "collectedAt", "targetSeason", "player", "eligibility", "sources", "quality"],
+  "properties": {
+    "schemaVersion": {"const": "1.1.0"},
+    "snapshotId": {"type": "string", "format": "uuid"},
+    "collectedAt": {"type": "string", "format": "date-time"},
+    "targetSeason": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}$"},
+    "player": {
+      "type": "object",
+      "required": ["id", "canonicalName", "normalizedName", "team", "roles", "sourceIds"],
+      "properties": {
+        "id": {"type": "string", "format": "uuid"},
+        "canonicalName": {"type": "string", "minLength": 1},
+        "normalizedName": {"type": "string", "minLength": 1},
+        "birthDate": {"type": ["string", "null"], "format": "date"},
+        "team": {"type": "string", "minLength": 1},
+        "roles": {
+          "type": "object",
+          "required": ["classic", "mantra"],
+          "properties": {
+            "classic": {"type": "array", "minItems": 1, "items": {"enum": ["P", "D", "C", "A"]}},
+            "mantra": {"type": "array", "items": {"type": "string"}}
+          },
+          "additionalProperties": false
+        },
+        "sourceIds": {
+          "type": "object",
+          "required": ["fantacalcio", "fpedia"],
+          "properties": {
+            "fantacalcio": {"type": "integer", "minimum": 1},
+            "fpedia": {"type": "integer", "minimum": 1},
+            "serieA": {"type": ["string", "null"]}
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "eligibility": {
+      "type": "object",
+      "required": ["status", "canonicalSource", "verified", "verifiedAt"],
+      "properties": {
+        "status": {"enum": ["active", "removed", "transferred_out", "pending_verification", "source_mismatch"]},
+        "canonicalSource": {"const": "fantacalcio.it"},
+        "verified": {"type": "boolean"},
+        "verificationMethod": {"type": "string"},
+        "verifiedAt": {"type": "string", "format": "date-time"},
+        "notes": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "sources": {
+      "type": "object",
+      "required": ["fantacalcio", "fpedia", "serieA"],
+      "properties": {
+        "fantacalcio": {"$ref": "#/$defs/sourceSuccess"},
+        "fpedia": {"$ref": "#/$defs/sourceSuccess"},
+        "serieA": {"$ref": "#/$defs/sourcePartial"}
+      },
+      "additionalProperties": false
+    },
+    "quality": {
+      "type": "object",
+      "required": ["contractValid", "identity", "coverage", "warnings"],
+      "properties": {
+        "contractValid": {"type": "boolean"},
+        "identity": {
+          "type": "object",
+          "required": ["nameMatch", "birthDateMatch", "teamMatch", "confidence"],
+          "properties": {
+            "nameMatch": {"type": "boolean"},
+            "birthDateMatch": {"type": "boolean"},
+            "teamMatch": {"type": "boolean"},
+            "confidence": {"type": "number", "minimum": 0, "maximum": 1}
+          },
+          "additionalProperties": false
+        },
+        "coverage": {"type": "object", "additionalProperties": {"type": "string"}},
+        "warnings": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "evidence": {
+      "type": "object",
+      "required": ["retrievalMode", "observedAt", "contentType", "parserVersion", "accessVerified", "responseShape"],
+      "properties": {
+        "retrievalMode": {"type": "string"},
+        "observedAt": {"type": "string", "format": "date-time"},
+        "httpStatus": {"type": ["integer", "null"]},
+        "contentType": {"type": ["string", "null"]},
+        "contentSha256": {"type": ["string", "null"]},
+        "parserVersion": {"type": "string"},
+        "accessVerified": {"type": "boolean"},
+        "responseShape": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "sourceSuccess": {
+      "type": "object",
+      "required": ["status", "url", "evidence", "data"],
+      "properties": {
+        "status": {"const": "success"},
+        "url": {"type": "string", "format": "uri"},
+        "evidence": {"$ref": "#/$defs/evidence"},
+        "data": {"type": "object"}
+      },
+      "additionalProperties": false
+    },
+    "sourcePartial": {
+      "type": "object",
+      "required": ["status", "profileUrl", "statisticsUrl", "evidence", "access", "data", "reason"],
+      "properties": {
+        "status": {"const": "partial"},
+        "profileUrl": {"type": "string", "format": "uri"},
+        "statisticsUrl": {"type": "string", "format": "uri"},
+        "evidence": {"$ref": "#/$defs/evidence"},
+        "access": {"type": "object"},
+        "data": {"type": "object"},
+        "reason": {"type": "string"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

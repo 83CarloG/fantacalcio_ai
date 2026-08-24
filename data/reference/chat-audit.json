@@ -1,0 +1,167 @@
+{
+  "schemaVersion": "0.1.0",
+  "summary": {
+    "parsedMessages": 2775,
+    "fileLines": 3384,
+    "dateRange": {
+      "from": "05/09/2024",
+      "to": "02/08/2026"
+    },
+    "years": {
+      "2024": 926,
+      "2025": 1277,
+      "2026": 572
+    },
+    "uniqueSenderLabels": 9,
+    "likelyCoreManagers": 8,
+    "auctionMarketRelatedMessages": 133,
+    "attachments": {
+      "jpg": 136,
+      "opus": 36,
+      "mp4": 29,
+      "webp": 28
+    },
+    "candidatePriceEvents": 10,
+    "highConfidencePriceEvents": 6
+  },
+  "fitness": {
+    "leagueRules": "high",
+    "auctionDatesAndProcess": "high",
+    "completePurchaseLedger": "low",
+    "individualPriceExamples": "medium",
+    "tradeAndDemandSignals": "high",
+    "managerPreferenceSignals": "medium",
+    "historicalRosters": "low_without_linked_artifacts",
+    "automatedSentiment": "medium_low_due_to_irony"
+  },
+  "limitations": [
+    "La maggior parte dell'asta avviene fuori dalla chat o tramite immagini, audio e strumenti esterni.",
+    "Ironia e battute rendono inaffidabile un sentiment model generico.",
+    "I nomi dei giocatori possono essere abbreviati o contenere errori.",
+    "Alcuni partecipanti usano numero di telefono, nome, soprannome o menzione diversa.",
+    "Il foglio Google e il workspace FantaLab non sono inclusi nell'esportazione testuale."
+  ],
+  "transactionCandidates": [
+    {
+      "season": "2024-25",
+      "eventType": "implied_purchase_price",
+      "playerName": "Dennis Man",
+      "credits": 60,
+      "confidence": 0.55,
+      "evidenceLines": [
+        306,
+        307
+      ],
+      "note": "Il prezzo è inferito dal rimborso atteso; non è espresso come acquisto concluso."
+    },
+    {
+      "season": "2024-25",
+      "eventType": "player_sold",
+      "playerName": "Lucas Beltrán",
+      "credits": 7,
+      "buyerNameAsWritten": "Nicola",
+      "confidence": 0.88,
+      "evidenceLines": [
+        1339
+      ],
+      "note": "Messaggio post asta di riparazione."
+    },
+    {
+      "season": "2024-25",
+      "eventType": "player_sold",
+      "playerName": "Jens Odgaard",
+      "credits": 53,
+      "buyer": "manager-03",
+      "confidence": 0.93,
+      "evidenceLines": [
+        1345,
+        1346
+      ],
+      "note": "Il destinatario risponde giustificando l'acquisto."
+    },
+    {
+      "season": "2025-26",
+      "eventType": "player_sold",
+      "playerName": "Albert Gudmundsson",
+      "credits": 41,
+      "buyer": "manager-02",
+      "confidence": 0.98,
+      "evidenceLines": [
+        2314,
+        2315
+      ]
+    },
+    {
+      "season": "2025-26",
+      "eventType": "implied_purchase_price",
+      "playerName": "Moise Kean",
+      "credits": 130,
+      "buyer": "manager-07",
+      "confidence": 0.82,
+      "evidenceLines": [
+        2343
+      ],
+      "note": "Prezzo inferito dal contesto immediatamente riferito a Kean."
+    },
+    {
+      "season": "2025-26",
+      "eventType": "implied_purchase_price",
+      "playerName": "Ange-Yoan Bonny",
+      "credits": 1,
+      "buyer": "manager-02",
+      "confidence": 0.74,
+      "evidenceLines": [
+        2362
+      ],
+      "note": "Frase sintetica; da confermare con ledger."
+    },
+    {
+      "season": "2025-26",
+      "eventType": "implied_purchase_price",
+      "playerName": "Hakan Çalhanoğlu",
+      "credits": 26,
+      "buyer": "manager-02",
+      "confidence": 0.91,
+      "evidenceLines": [
+        2373
+      ],
+      "note": "Usato per descrivere il valore della rosa."
+    },
+    {
+      "season": "2025-26",
+      "eventType": "player_sold",
+      "playerName": "Lorenzo Lucca",
+      "credits": 55,
+      "buyer": "manager-03",
+      "confidence": 0.99,
+      "evidenceLines": [
+        2629,
+        2631
+      ]
+    },
+    {
+      "season": "2025-26",
+      "eventType": "purchase_price_recovered",
+      "playerName": "Valentín Castellanos",
+      "credits": 92,
+      "buyer": "manager-07",
+      "confidence": 0.97,
+      "evidenceLines": [
+        3093
+      ],
+      "note": "Rimborso pieno perché fuori listone: equivale al prezzo pagato secondo il regolamento."
+    },
+    {
+      "season": "2025-26",
+      "eventType": "purchase_price_recovered",
+      "playerName": "Noa Lang",
+      "credits": 11,
+      "buyer": "manager-07",
+      "confidence": 0.97,
+      "evidenceLines": [
+        3093
+      ],
+      "note": "Rimborso pieno perché fuori listone: equivale al prezzo pagato secondo il regolamento."
+    }
+  ]
+}

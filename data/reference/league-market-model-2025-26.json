@@ -1,0 +1,193 @@
+{
+  "schemaVersion": "0.2.0",
+  "generatedAt": "2026-08-07T00:07:00+02:00",
+  "source": {
+    "filename": "Quotazioni_Fantacalcio_Stagione_2025_26 (1).xlsx",
+    "sha256": "5565e64090b5d29f385f84587b3ef1f8c2511153b91f3e1b7369b1781cee86be",
+    "season": "2025-26",
+    "transactions": 200,
+    "participants": 8,
+    "completeRosters": true
+  },
+  "league": {
+    "budgetPerManager": 500,
+    "participants": 8,
+    "roster": {
+      "P": 3,
+      "D": 8,
+      "C": 8,
+      "A": 6
+    },
+    "totalBudget": 4000,
+    "totalSpent": 3899,
+    "residualCredits": 101,
+    "spendByRole": {
+      "P": {
+        "players": 24,
+        "credits": 387,
+        "shareOfSpent": 0.099256
+      },
+      "D": {
+        "players": 64,
+        "credits": 679,
+        "shareOfSpent": 0.174147
+      },
+      "C": {
+        "players": 64,
+        "credits": 1033,
+        "shareOfSpent": 0.26494
+      },
+      "A": {
+        "players": 48,
+        "credits": 1800,
+        "shareOfSpent": 0.461657
+      }
+    }
+  },
+  "priceModel": {
+    "type": "role_specific_linear_regression",
+    "input": "fantacalcioFvmPer1000",
+    "formula": "max(1, intercept + slope * fvmPer1000)",
+    "roles": {
+      "P": {
+        "intercept": -2.41479127,
+        "slope": 0.50448412,
+        "mae": 3.3982,
+        "rmse": 4.8991,
+        "pearsonCorrelation": 0.9555,
+        "spearmanCorrelation": 0.8632,
+        "residualBands": {
+          "p25": -2.3033,
+          "p50": -0.0437,
+          "p75": 1.6256,
+          "p10": -4.7161,
+          "p90": 5.0655
+        }
+      },
+      "D": {
+        "intercept": -4.25281359,
+        "slope": 0.50406999,
+        "mae": 3.2968,
+        "rmse": 4.1301,
+        "pearsonCorrelation": 0.9247,
+        "spearmanCorrelation": 0.8636,
+        "residualBands": {
+          "p25": -3.1764,
+          "p50": -0.3164,
+          "p75": 2.5982,
+          "p10": -4.4401,
+          "p90": 5.0754
+        }
+      },
+      "C": {
+        "intercept": -2.64421491,
+        "slope": 0.34546832,
+        "mae": 6.1218,
+        "rmse": 8.0583,
+        "pearsonCorrelation": 0.9126,
+        "spearmanCorrelation": 0.7421,
+        "residualBands": {
+          "p25": -4.7607,
+          "p50": -0.0107,
+          "p75": 5.1212,
+          "p10": -8.1363,
+          "p90": 9.4366
+        }
+      },
+      "A": {
+        "intercept": -7.94481662,
+        "slope": 0.39929548,
+        "mae": 10.9902,
+        "rmse": 14.2951,
+        "pearsonCorrelation": 0.927,
+        "spearmanCorrelation": 0.9029,
+        "residualBands": {
+          "p25": -9.6932,
+          "p50": -1.6174,
+          "p75": 8.2742,
+          "p10": -17.206,
+          "p90": 18.6384
+        }
+      }
+    },
+    "limitations": [
+      "Calibrato su una sola asta completa.",
+      "Il prezzo dipende dall'ordine di chiamata, dai crediti residui e dagli slot disponibili.",
+      "I coefficienti devono essere aggiornati quando sarà disponibile una seconda asta completa.",
+      "La chat deve essere usata come segnale di domanda e non come sorgente primaria del prezzo."
+    ]
+  },
+  "liveAdjustments": {
+    "earlySeasonPerformance": {
+      "maxWeight": 0.3,
+      "application": "technical_score_only",
+      "note": "Il peso cresce con i minuti giocati e non modifica direttamente il modello mercato."
+    },
+    "chatDemand": {
+      "maxPriceAdjustment": 0.1,
+      "note": "Applicare solo a interesse esplicito, proposte o citazioni pre-asta recenti."
+    },
+    "auctionPressure": {
+      "inputs": [
+        "managerResidualCredits",
+        "managerOpenSlotsByRole",
+        "playersRemainingByTier",
+        "nominationOrder"
+      ],
+      "application": "dynamic_expected_price"
+    }
+  },
+  "samplePlayers": [
+    {
+      "fantacalcioPlayerId": 2521,
+      "name": "De Gea",
+      "role": "P",
+      "buyer": "Marco",
+      "auctionPrice": 29,
+      "fvmPer1000": 64,
+      "expectedPrice": 29.87,
+      "priceP25": 27.57,
+      "priceP75": 31.5,
+      "auctionResidual": -0.87,
+      "auctionResidualPct": -0.0292,
+      "initialQuotation": 14,
+      "currentQuotation": 14,
+      "quotationDelta": 0,
+      "fvmTier": 2
+    },
+    {
+      "fantacalcioPlayerId": 2097,
+      "name": "Kean",
+      "role": "A",
+      "buyer": "Nicola",
+      "auctionPrice": 136,
+      "fvmPer1000": 364,
+      "expectedPrice": 137.4,
+      "priceP25": 127.71,
+      "priceP75": 145.67,
+      "auctionResidual": -1.4,
+      "auctionResidualPct": -0.0102,
+      "initialQuotation": 33,
+      "currentQuotation": 31,
+      "quotationDelta": -2,
+      "fvmTier": 1
+    },
+    {
+      "fantacalcioPlayerId": 6875,
+      "name": "Paz N.",
+      "role": "C",
+      "buyer": "Nicola",
+      "auctionPrice": 65,
+      "fvmPer1000": 132,
+      "expectedPrice": 42.96,
+      "priceP25": 38.2,
+      "priceP75": 48.08,
+      "auctionResidual": 22.04,
+      "auctionResidualPct": 0.5131,
+      "initialQuotation": 20,
+      "currentQuotation": 21,
+      "quotationDelta": 1,
+      "fvmTier": 1
+    }
+  ]
+}

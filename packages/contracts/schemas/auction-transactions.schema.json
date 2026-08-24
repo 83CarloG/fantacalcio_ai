@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fanta-luminous.local/schemas/auction-transactions-v1.json",
+  "type": "object",
+  "required": ["schemaVersion", "season", "transactions"],
+  "properties": {
+    "schemaVersion": {"const": "1.0.0"},
+    "season": {"type": "string"},
+    "sourceSha256": {"type": ["string", "null"]},
+    "transactions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["fantacalcioPlayerId", "name", "team", "role", "buyer", "price", "fvmPer1000"],
+        "properties": {
+          "fantacalcioPlayerId": {"type": "integer", "minimum": 1},
+          "name": {"type": "string", "minLength": 1},
+          "team": {"type": "string"},
+          "role": {"enum": ["P", "D", "C", "A"]},
+          "mantraRole": {"type": ["string", "null"]},
+          "buyer": {"type": "string"},
+          "price": {"type": "number", "minimum": 1},
+          "quotationInitial": {"type": ["number", "null"]},
+          "quotationCurrent": {"type": ["number", "null"]},
+          "quotationDelta": {"type": ["number", "null"]},
+          "fvmPer1000": {"type": "number", "minimum": 0},
+          "fvmTier": {"type": ["integer", "null"]},
+          "modelExpectedPrice": {"type": ["number", "null"]},
+          "modelResidual": {"type": ["number", "null"]}
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": false
+}

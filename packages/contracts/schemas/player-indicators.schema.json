@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fanta-luminous.local/schemas/player-indicators-v0.4.json",
+  "title": "Player indicators",
+  "type": "object",
+  "required": ["modelVersion", "playerId", "calculatedAt", "technical", "market", "auction", "quality"],
+  "properties": {
+    "modelVersion": {"const": "0.4.0"},
+    "playerId": {"type": "integer", "minimum": 1},
+    "calculatedAt": {"type": "string", "format": "date-time"},
+    "technical": {
+      "type": "object",
+      "required": ["preseasonScore", "earlySeasonScore", "earlySeasonWeight", "availabilityScore", "combinedScore", "riskScore", "confidence"],
+      "properties": {
+        "preseasonScore": {"type": "number", "minimum": 0, "maximum": 100},
+        "earlySeasonScore": {"type": ["number", "null"], "minimum": 0, "maximum": 100},
+        "earlySeasonWeight": {"type": "number", "minimum": 0, "maximum": 0.3},
+        "availabilityScore": {"type": "number", "minimum": 0, "maximum": 100},
+        "combinedScore": {"type": "number", "minimum": 0, "maximum": 100},
+        "riskScore": {"type": "number", "minimum": 0, "maximum": 100},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1}
+      },
+      "additionalProperties": false
+    },
+    "market": {
+      "type": "object",
+      "required": ["modelRole", "fvmPer1000", "baseExpectedPrice", "expectedPrice", "priceP25", "priceP75", "chatDemandIndex", "auctionPressure", "confidence", "singleSeasonCalibration"],
+      "properties": {
+        "modelRole": {"enum": ["P", "D", "C", "A"]},
+        "fvmPer1000": {"type": "number", "minimum": 0},
+        "baseExpectedPrice": {"type": "number", "minimum": 1},
+        "expectedPrice": {"type": "number", "minimum": 1},
+        "priceP25": {"type": "number", "minimum": 1},
+        "priceP75": {"type": "number", "minimum": 1},
+        "chatDemandIndex": {"type": "number", "minimum": 0, "maximum": 100},
+        "auctionPressure": {"type": "number", "minimum": 0, "maximum": 100},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "singleSeasonCalibration": {"const": true}
+      },
+      "additionalProperties": false
+    },
+    "auction": {
+      "type": "object",
+      "required": ["recommendedMaxBid", "valueGap", "scarcityIndex", "auctionPressure", "spendableBudget", "strategy"],
+      "properties": {
+        "recommendedMaxBid": {"type": "number", "minimum": 1},
+        "valueGap": {"type": "number"},
+        "scarcityIndex": {"type": "number", "minimum": 0, "maximum": 100},
+        "auctionPressure": {"type": "number", "minimum": 0, "maximum": 100},
+        "spendableBudget": {"type": "number", "minimum": 1},
+        "strategy": {"enum": ["strong_buy", "buy", "fair", "overpriced", "avoid"]}
+      },
+      "additionalProperties": false
+    },
+    "quality": {
+      "type": "object",
+      "required": ["sourceCoverage", "technicalConfidence", "marketConfidence", "singleSeasonCalibration", "warnings"],
+      "properties": {
+        "sourceCoverage": {"type": "object"},
+        "technicalConfidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "marketConfidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "singleSeasonCalibration": {"const": true},
+        "warnings": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

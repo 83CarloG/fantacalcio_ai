@@ -1,0 +1,51 @@
+<section class="page-heading">
+  <div><p class="eyebrow">{{player.team}}</p><h1>{{player.name}} <fanta-badge tone="{{player.role}}">{{player.role}}</fanta-badge></h1></div>
+</section>
+
+{{#unless indicators}}
+<p class="flash flash--warning">Dati non ancora disponibili per questo giocatore: è in attesa di arricchimento FPEDIA (o non è mai stato trovato su FPEDIA). Il prezzo atteso e la valutazione offerta non possono essere calcolati finché non ci sono questi dati.</p>
+{{/unless}}
+
+{{#if indicators}}
+{{#if indicators.warnings.length}}
+{{#each indicators.warnings}}<p class="flash flash--warning">{{warningLabel this}}</p>{{/each}}
+{{/if}}
+
+<section class="stats-grid">
+  <div>
+    <fanta-stat-card label="Technical score" value="{{indicators.technical.technicalProjectionScore}}" trend="positive"></fanta-stat-card>
+    <span class="stat-caption">0–100, più alto = proiezione tecnica migliore</span>
+  </div>
+  <div>
+    <fanta-stat-card label="Risk score" value="{{indicators.technical.riskScore}}" trend="warning"></fanta-stat-card>
+    <span class="stat-caption">0–100, più alto = più rischioso (infortuni/incertezza)</span>
+  </div>
+  <div>
+    <fanta-stat-card label="Scarcity" value="{{indicators.technical.scarcityIndex}}" trend="neutral"></fanta-stat-card>
+    <span class="stat-caption">{{#if (eq indicators.technical.scarcityIndex null)}}non disponibile: dati insufficienti per questo giocatore{{else}}0–100, più alto = più sopra il livello di replacement del ruolo (domanda reale di rosa){{/if}}</span>
+  </div>
+  <div>
+    <fanta-stat-card label="Expected price" value="{{indicators.market.expectedPrice}}" suffix=" cr" trend="neutral"></fanta-stat-card>
+    <span class="stat-caption">prezzo atteso all'asta, in crediti</span>
+  </div>
+</section>
+
+<section class="panel evaluate-panel">
+  <div class="panel__header"><h2>Valuta l'offerta</h2><p class="panel__hint">Calibrazione mercato: {{calibrationLabel indicators.market.calibration}} · {{confidenceLabel indicators.market.confidence}}</p></div>
+  <form id="evaluate-form" class="evaluate-form" method="get" action="/players/{{player.player_id}}">
+    <label>Offerta attuale (cr)<input type="number" name="currentBid" min="0" step="1" value="{{bidInput.currentBid}}" required></label>
+    <label>Budget residuo (cr)<input type="number" name="availableBudget" min="0" step="1" value="{{bidInput.availableBudget}}" required></label>
+    <label>Slot residui in rosa<input type="number" name="remainingSlots" min="0" step="1" value="{{bidInput.remainingSlots}}" required></label>
+    <fanta-button type="submit">Valuta rilancio</fanta-button>
+  </form>
+  <div id="evaluate-result" class="evaluate-result">
+    {{#if evaluation}}
+    <p class="evaluate-result__verdict"><fanta-badge tone="{{evaluation.strategy}}">{{#if (eq evaluation.strategy "bid")}}Rilancia{{else}}Ritirati{{/if}}</fanta-badge> rilancio massimo consigliato <strong>{{evaluation.recommendedMaxBid}} cr</strong></p>
+    <p class="evaluate-result__detail">Riserva minima per gli slot residui: {{evaluation.minimumReserve}} cr · budget disponibile dopo la riserva: {{evaluation.affordableBudget}} cr</p>
+    {{/if}}
+    {{#if evaluationError}}<p class="form-error">Impossibile valutare l'offerta: {{evaluationError}}</p>{{/if}}
+  </div>
+</section>
+
+<section class="panel"><h2>Trasparenza modello</h2><p class="panel__hint">Output grezzo e versionato usato per calcolare gli indicatori sopra.</p><pre class="code-block">{{json indicators}}</pre></section>
+{{/if}}

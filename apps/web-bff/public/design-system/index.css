@@ -1,0 +1,30 @@
+:root {
+  --fanta-color-bg:#f5f7fb;
+  --fanta-color-surface:#ffffff;
+  --fanta-color-text:#172033;
+  --fanta-color-muted:#667085;
+  --fanta-color-primary:#2457d6;
+  --fanta-color-primary-hover:#1c46b3;
+  --fanta-color-success:#147a4a;
+  --fanta-color-warning:#a15c00;
+  --fanta-color-danger:#b42318;
+  --fanta-color-border:#e4e7ec;
+  --fanta-space-1:4px; --fanta-space-2:8px; --fanta-space-3:12px; --fanta-space-4:16px; --fanta-space-5:20px; --fanta-space-6:24px; --fanta-space-8:32px;
+  --fanta-radius-sm:6px; --fanta-radius-md:10px; --fanta-radius-lg:14px;
+  --fanta-shadow-sm:0 1px 3px rgba(16,24,40,.08);
+  --fanta-icon-size-md:24px; --fanta-badge-height:24px; --fanta-search-height:40px; --fanta-stat-card-min-height:110px;
+  --fanta-layout-max:1200px; --fanta-header-height:64px; --fanta-card-min-width:190px; --fanta-page-gutter:32px; --fanta-letter-spacing-wide:.08em;
+}
+
+:root {
+  --fanta-font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --fanta-font-size-xs:12px; --fanta-font-size-sm:14px; --fanta-font-size-md:16px; --fanta-font-size-xl:24px; --fanta-font-size-2xl:34px;
+  --fanta-font-weight-medium:600; --fanta-font-weight-bold:750;
+}
+
+fanta-stat-card:not(:defined){display:block;min-height:var(--fanta-stat-card-min-height)}
+fanta-badge:not(:defined){display:inline-block;min-height:var(--fanta-badge-height);min-width:32px}
+fanta-search:not(:defined){display:block;min-height:var(--fanta-search-height);min-width:calc(var(--fanta-card-min-width) + var(--fanta-space-8))}
+
+
+

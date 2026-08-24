@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "0.1.0",
+  "source": {
+    "type": "whatsapp_export",
+    "fileName": "WhatsApp Chat with Fanta fanta fanta.txt",
+    "sha256": "987fec88d535d83dc96e4455f1359522c104c33dddde4acdbcdc3c1e8132a729",
+    "lineCount": 3384,
+    "messageCount": 2775,
+    "dateRange": {
+      "from": "05/09/2024",
+      "to": "02/08/2026"
+    }
+  },
+  "privacy": {
+    "participantsPseudonymized": true,
+    "emailsExcluded": true,
+    "phoneNumbersExcluded": true
+  },
+  "league": {
+    "estimatedManagers": 8,
+    "initialBudgetCredits": 500,
+    "roster": {
+      "goalkeepers": 3,
+      "defenders": 8,
+      "midfielders": 8,
+      "attackers": 6,
+      "total": 25
+    },
+    "auction": {
+      "type": "nomination_open_bidding",
+      "roleOrderStartsWith": "goalkeepers",
+      "winterRepairAuction": true
+    },
+    "lineup": {
+      "substitutions": 5,
+      "sameRole": true
+    },
+    "scoring": {
+      "goal": 3,
+      "assist": 1,
+      "cleanSheet": 1,
+      "yellowCard": -0.5,
+      "redCard": -1,
+      "missedPenalty": -3,
+      "goalConceded": -1,
+      "ownGoal": -2,
+      "defenseModifier": {
+        "enabled": true,
+        "exactBandsIncompleteInText": true
+      },
+      "goalBands": {
+        "stepPoints": 4,
+        "thresholds": [
+          {
+            "min": 66,
+            "goals": 1
+          },
+          {
+            "min": 70,
+            "goals": 2
+          },
+          {
+            "min": 74,
+            "goals": 3
+          },
+          {
+            "min": 78,
+            "goals": 4
+          }
+        ]
+      }
+    },
+    "releaseRefund": {
+      "stillInSerieAList": {
+        "percentage": 50,
+        "rounding": "ceil"
+      },
+      "outOfSerieAList": {
+        "percentage": 100
+      }
+    }
+  },
+  "chatCoverage": {
+    "messagesByYear": {
+      "2024": 926,
+      "2025": 1277,
+      "2026": 572
+    },
+    "senderLabels": 9,
+    "auctionMarketRelatedMessages": 133,
+    "attachments": {
+      "total": 229,
+      "jpg": 136,
+      "opus": 36,
+      "mp4": 29,
+      "webp": 28
+    },
+    "fullAuctionLedgerPresentInText": false,
+    "externalAuctionArtifactsMentioned": [
+      "FantaLab shared app",
+      "Google spreadsheet",
+      "Fantacalcio live auction link"
+    ]
+  },
+  "algorithmImplications": [
+    "Applicare valori e normalizzazioni specifici per una lega a 8 e budget 500.",
+    "Premiare portieri e difensori affidabili per bonus porta inviolata e modificatore difesa.",
+    "Ottimizzare probabilità di superare le fasce gol da 4 punti, non solo somma lineare attesa.",
+    "Tenere riserva di budget per asta di riparazione e considerare il valore di rimborso.",
+    "Usare la chat come segnale debole di domanda, hype, rischio percepito e preferenze manager.",
+    "Usare il ledger FantaLab/foglio Google come fonte primaria per stimare prezzi e inflazione."
+  ]
+}

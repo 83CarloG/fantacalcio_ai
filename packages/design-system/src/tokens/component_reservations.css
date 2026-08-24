@@ -1,0 +1,3 @@
+fanta-stat-card:not(:defined){display:block;min-height:var(--fanta-stat-card-min-height)}
+fanta-badge:not(:defined){display:inline-block;min-height:var(--fanta-badge-height);min-width:32px}
+fanta-search:not(:defined){display:block;min-height:var(--fanta-search-height);min-width:calc(var(--fanta-card-min-width) + var(--fanta-space-8))}

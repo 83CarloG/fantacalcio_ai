@@ -1,0 +1,20 @@
+{
+  "name": "@fanta/design-system",
+  "version": "0.1.0",
+  "private": true,
+  "main": "dist/index.js",
+  "style": "dist/index.css",
+  "scripts": {
+    "build": "webpack --mode production",
+    "watch": "webpack --mode development --watch"
+  },
+  "devDependencies": {
+    "css-loader": "^7.1.2",
+    "css-minimizer-webpack-plugin": "^7.0.0",
+    "mini-css-extract-plugin": "^2.9.0",
+    "postcss": "^8.4.0",
+    "postcss-loader": "^8.1.1",
+    "webpack": "^5.94.0",
+    "webpack-cli": "^5.1.4"
+  }
+}

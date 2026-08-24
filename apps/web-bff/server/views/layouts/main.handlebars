@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{{title}}</title>
+  <link rel="stylesheet" href="/assets/design-system/index.css">
+  <link rel="stylesheet" href="/assets/app.css">
+  <script defer src="/assets/design-system/index.js"></script>
+  <script defer src="/assets/app.js"></script>
+</head>
+<body>
+  <header class="app-header">
+    <a class="brand" href="/">Fanta Luminous</a>
+    <nav>
+      <a href="/" class="{{#if (eq path "/")}}active{{/if}}">Dashboard</a>
+      <a href="/players" class="{{#if (startsWith path "/players")}}active{{/if}}">Giocatori</a>
+      <a href="/design-system" class="{{#if (eq path "/design-system")}}active{{/if}}">Design System</a>
+    </nav>
+  </header>
+  <main class="app-main">{{{body}}}</main>
+</body>
+</html>

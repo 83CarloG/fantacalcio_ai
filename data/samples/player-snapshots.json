@@ -1,0 +1,744 @@
+[
+  {
+    "schemaVersion": "1.1.0",
+    "snapshotId": "6e91ec67-5db6-49ca-8de4-6785d6413913",
+    "collectedAt": "2026-08-06T21:49:00Z",
+    "targetSeason": "2026-27",
+    "player": {
+      "id": "d4a1c944-c7fd-4f1c-b5e4-0f088540df2f",
+      "canonicalName": "Nico Paz",
+      "normalizedName": "nico paz",
+      "birthDate": "2004-09-08",
+      "team": "Como",
+      "roles": {
+        "classic": [
+          "C"
+        ],
+        "mantra": [
+          "T"
+        ]
+      },
+      "sourceIds": {
+        "fantacalcio": 6875,
+        "fpedia": 3803,
+        "serieA": "nicolas-paz-martinez"
+      }
+    },
+    "eligibility": {
+      "status": "active",
+      "canonicalSource": "fantacalcio.it",
+      "verified": true,
+      "verificationMethod": "profile_page",
+      "verifiedAt": "2026-08-06T21:49:00Z",
+      "notes": [
+        "Current official profile exposes a 2026-27 pre-season quotation and FVM."
+      ]
+    },
+    "sources": {
+      "fantacalcio": {
+        "status": "success",
+        "url": "https://www.fantacalcio.it/serie-a/squadre/como/paz-n/6875/2025-26",
+        "evidence": {
+          "retrievalMode": "live_http_research_proxy",
+          "observedAt": "2026-08-06T21:49:00Z",
+          "httpStatus": null,
+          "contentType": "text/html",
+          "contentSha256": null,
+          "parserVersion": "fantacalcio-parser@0.1.0",
+          "accessVerified": true,
+          "responseShape": "server_rendered_html"
+        },
+        "data": {
+          "playerId": 6875,
+          "name": "Nico Paz",
+          "team": "Como",
+          "birthDate": "2004-09-08",
+          "heightCm": 185,
+          "foot": "Sx",
+          "nationalities": [
+            "Argentina",
+            "Spagna"
+          ],
+          "seasonObserved": "2025-26",
+          "ratings": {
+            "average": 6.37,
+            "fantasyAverage": 7.3
+          },
+          "quotations": {
+            "classic": 26,
+            "mantra": 26
+          },
+          "fvmPer1000": {
+            "classic": 245,
+            "mantra": 245
+          },
+          "stats": {
+            "appearancesWithGrade": 35,
+            "goals": 12,
+            "assists": 5,
+            "yellowCards": 5,
+            "redCards": 0,
+            "ownGoals": 0,
+            "goalsConceded": null,
+            "penaltiesScored": 0,
+            "penaltiesTaken": 2,
+            "penaltiesSaved": null
+          },
+          "availabilitySummary": {
+            "started": 33,
+            "entered": 2,
+            "suspended": 0,
+            "injured": 0,
+            "unused": 3
+          }
+        }
+      },
+      "fpedia": {
+        "status": "success",
+        "url": "https://www.fantacalciopedia.com/lista-calciatori-serie-a/centrocampisti/3803/paz-nico.html",
+        "evidence": {
+          "retrievalMode": "live_http_research_proxy",
+          "observedAt": "2026-08-06T21:49:00Z",
+          "httpStatus": null,
+          "contentType": "text/html",
+          "contentSha256": null,
+          "parserVersion": "fpedia-parser@0.1.0",
+          "accessVerified": true,
+          "responseShape": "server_rendered_html"
+        },
+        "data": {
+          "playerId": 3803,
+          "name": "PAZ NICO",
+          "team": "Como",
+          "role": "CEN",
+          "birthDate": "2004-09-08",
+          "heightCm": 185,
+          "weightKg": 77,
+          "nationality": "Argentina",
+          "algorithmScore": 98,
+          "fcpScore": 81,
+          "investmentSolidityPct": 80,
+          "injuryResistancePct": 60,
+          "currentSeason": {
+            "season": "2025-26",
+            "appearances": 35,
+            "fantasyAverage": 7.3,
+            "fantasyAverageAllRounds": 6.72
+          },
+          "history": [
+            {
+              "season": "2025-26",
+              "appearances": 35,
+              "fantasyAverage": 7.3
+            },
+            {
+              "season": "2024-25",
+              "appearances": 33,
+              "fantasyAverage": 6.89
+            },
+            {
+              "season": "2023-24",
+              "appearances": 0,
+              "fantasyAverage": null
+            }
+          ],
+          "projection": {
+            "targetSeason": "2026-27",
+            "appearances": {
+              "raw": "30+",
+              "min": 30,
+              "max": null
+            },
+            "goals": {
+              "raw": "4/7",
+              "min": 4,
+              "max": 7
+            },
+            "assists": {
+              "raw": "3/5",
+              "min": 3,
+              "max": 5
+            }
+          },
+          "skills": [
+            "Fuoriclasse",
+            "Titolare",
+            "Buona Media",
+            "Goleador",
+            "Assistman",
+            "Rigorista",
+            "Piazzati",
+            "Giovane talento"
+          ],
+          "flags": {
+            "newSigning": false,
+            "injured": false,
+            "recommendedNextRound": false
+          }
+        }
+      },
+      "serieA": {
+        "status": "partial",
+        "profileUrl": "https://www1.legaseriea.it/players/nicolas-paz-martinez",
+        "statisticsUrl": "https://www.legaseriea.it/players/nicolas-paz-martinez/statistics",
+        "evidence": {
+          "retrievalMode": "live_http_research_proxy",
+          "observedAt": "2026-08-06T21:49:00Z",
+          "httpStatus": null,
+          "contentType": "text/html",
+          "contentSha256": null,
+          "parserVersion": "serie-a-parser@0.1.0",
+          "accessVerified": true,
+          "responseShape": "partial_server_rendered_html"
+        },
+        "access": {
+          "public": true,
+          "authenticationRequired": false,
+          "profileIdentityAvailable": true,
+          "aggregateStatisticsAvailable": false,
+          "simpleHttpCollectionRecommended": false,
+          "browserExecutionLikelyRequired": true,
+          "recommendedUse": "identity_only"
+        },
+        "data": {
+          "identity": {
+            "shirtNumber": 10,
+            "name": "Nicolas Paz Martinez",
+            "team": "Como",
+            "nationality": "Argentina",
+            "position": "Midfielder",
+            "birthDate": "2004-09-08",
+            "heightCm": 186,
+            "weightKg": 74
+          },
+          "statistics": {
+            "status": "no_data_for_selected_season",
+            "season": null,
+            "matchesPlayed": null,
+            "minutesPlayed": null,
+            "goals": null,
+            "assists": null,
+            "yellowCards": null,
+            "redCards": null,
+            "shotsTotal": null,
+            "shotsOnTarget": null,
+            "passingAccuracyPct": null,
+            "distanceKmTotal": null
+          }
+        },
+        "reason": "The public profile identity is server-rendered, but the aggregate statistics page returned NO DATA AVAILABLE or a loading shell during the live verification. Do not use it as the primary statistics feed without discovering the underlying API or running a browser adapter."
+      }
+    },
+    "quality": {
+      "contractValid": true,
+      "identity": {
+        "nameMatch": true,
+        "birthDateMatch": true,
+        "teamMatch": true,
+        "confidence": 1.0
+      },
+      "coverage": {
+        "fantacalcio": "complete",
+        "fpedia": "complete",
+        "serieA": "identity_only"
+      },
+      "warnings": [
+        "Lega Serie A reports 186 cm while Fantacalcio.it and FPEDIA report 185 cm.",
+        "Lega Serie A aggregate player statistics were not available through a stable simple HTTP response during verification; source retained for identity only."
+      ]
+    }
+  },
+  {
+    "schemaVersion": "1.1.0",
+    "snapshotId": "c53fc94d-9b42-4992-818a-eec8afcbf530",
+    "collectedAt": "2026-08-06T21:49:00Z",
+    "targetSeason": "2026-27",
+    "player": {
+      "id": "52868df2-0d83-43c4-9041-c337e86872ac",
+      "canonicalName": "David De Gea",
+      "normalizedName": "david de gea",
+      "birthDate": "1990-11-07",
+      "team": "Fiorentina",
+      "roles": {
+        "classic": [
+          "P"
+        ],
+        "mantra": [
+          "Por"
+        ]
+      },
+      "sourceIds": {
+        "fantacalcio": 2521,
+        "fpedia": 3770,
+        "serieA": "david-de-gea-quintana"
+      }
+    },
+    "eligibility": {
+      "status": "active",
+      "canonicalSource": "fantacalcio.it",
+      "verified": true,
+      "verificationMethod": "current_roster",
+      "verifiedAt": "2026-08-06T21:49:00Z",
+      "notes": [
+        "Official Fiorentina profile/roster page contains player ID 2521."
+      ]
+    },
+    "sources": {
+      "fantacalcio": {
+        "status": "success",
+        "url": "https://www.fantacalcio.it/serie-a/squadre/fiorentina/de-gea/2521/2025-26",
+        "evidence": {
+          "retrievalMode": "live_http_research_proxy",
+          "observedAt": "2026-08-06T21:49:00Z",
+          "httpStatus": null,
+          "contentType": "text/html",
+          "contentSha256": null,
+          "parserVersion": "fantacalcio-parser@0.1.0",
+          "accessVerified": true,
+          "responseShape": "server_rendered_html"
+        },
+        "data": {
+          "playerId": 2521,
+          "name": "David De Gea",
+          "team": "Fiorentina",
+          "birthDate": "1990-11-07",
+          "heightCm": 189,
+          "foot": "Dx",
+          "nationalities": [
+            "Spagna"
+          ],
+          "seasonObserved": "2025-26",
+          "ratings": {
+            "average": 6.24,
+            "fantasyAverage": 5.0
+          },
+          "quotations": {
+            "classic": 12,
+            "mantra": 12
+          },
+          "fvmPer1000": {
+            "classic": 28,
+            "mantra": 28
+          },
+          "stats": {
+            "appearancesWithGrade": 37,
+            "goals": null,
+            "assists": 0,
+            "yellowCards": 0,
+            "redCards": 0,
+            "ownGoals": 0,
+            "goalsConceded": 49,
+            "penaltiesScored": null,
+            "penaltiesTaken": null,
+            "penaltiesSaved": 1
+          },
+          "availabilitySummary": {
+            "started": 37,
+            "entered": 0,
+            "suspended": 0,
+            "injured": 0,
+            "unused": 1
+          }
+        }
+      },
+      "fpedia": {
+        "status": "success",
+        "url": "https://www.fantacalciopedia.com/lista-calciatori-serie-a/portieri/3770/de-gea-david.html",
+        "evidence": {
+          "retrievalMode": "live_http_research_proxy",
+          "observedAt": "2026-08-06T21:49:00Z",
+          "httpStatus": null,
+          "contentType": "text/html",
+          "contentSha256": null,
+          "parserVersion": "fpedia-parser@0.1.0",
+          "accessVerified": true,
+          "responseShape": "server_rendered_html"
+        },
+        "data": {
+          "playerId": 3770,
+          "name": "DE GEA DAVID",
+          "team": "Fiorentina",
+          "role": "POR",
+          "birthDate": "1990-11-07",
+          "heightCm": 192,
+          "weightKg": 78,
+          "nationality": "Spagna",
+          "algorithmScore": 88,
+          "fcpScore": 75,
+          "investmentSolidityPct": 60,
+          "injuryResistancePct": 60,
+          "currentSeason": {
+            "season": "2025-26",
+            "appearances": 37,
+            "fantasyAverage": 5.0,
+            "fantasyAverageAllRounds": 4.87
+          },
+          "history": [
+            {
+              "season": "2025-26",
+              "appearances": 37,
+              "fantasyAverage": 5.0
+            },
+            {
+              "season": "2024-25",
+              "appearances": 33,
+              "fantasyAverage": 5.38
+            },
+            {
+              "season": "2023-24",
+              "appearances": 0,
+              "fantasyAverage": null
+            }
+          ],
+          "projection": {
+            "targetSeason": "2026-27",
+            "appearances": {
+              "raw": "30+",
+              "min": 30,
+              "max": null
+            },
+            "goals": {
+              "raw": "0",
+              "min": 0,
+              "max": 0
+            },
+            "assists": {
+              "raw": "0",
+              "min": 0,
+              "max": 0
+            }
+          },
+          "skills": [
+            "Fuoriclasse",
+            "Titolare"
+          ],
+          "flags": {
+            "newSigning": false,
+            "injured": false,
+            "recommendedNextRound": false
+          }
+        }
+      },
+      "serieA": {
+        "status": "partial",
+        "profileUrl": "https://www1.legaseriea.it/players/david-de-gea-quintana",
+        "statisticsUrl": "https://www.legaseriea.it/players/david-de-gea-quintana/statistics",
+        "evidence": {
+          "retrievalMode": "live_http_research_proxy",
+          "observedAt": "2026-08-06T21:49:00Z",
+          "httpStatus": null,
+          "contentType": "text/html",
+          "contentSha256": null,
+          "parserVersion": "serie-a-parser@0.1.0",
+          "accessVerified": true,
+          "responseShape": "partial_server_rendered_html"
+        },
+        "access": {
+          "public": true,
+          "authenticationRequired": false,
+          "profileIdentityAvailable": true,
+          "aggregateStatisticsAvailable": false,
+          "simpleHttpCollectionRecommended": false,
+          "browserExecutionLikelyRequired": true,
+          "recommendedUse": "identity_only"
+        },
+        "data": {
+          "identity": {
+            "shirtNumber": 43,
+            "name": "David De Gea Quintana",
+            "team": "Fiorentina",
+            "nationality": "Spain",
+            "position": "Goalkeeper",
+            "birthDate": "1990-11-07",
+            "heightCm": 192,
+            "weightKg": 76
+          },
+          "statistics": {
+            "status": "no_data_for_selected_season",
+            "season": null,
+            "matchesPlayed": null,
+            "minutesPlayed": null,
+            "goals": null,
+            "assists": null,
+            "yellowCards": null,
+            "redCards": null,
+            "shotsTotal": null,
+            "shotsOnTarget": null,
+            "passingAccuracyPct": null,
+            "distanceKmTotal": null
+          }
+        },
+        "reason": "The public profile identity is server-rendered, but the aggregate statistics page returned NO DATA AVAILABLE or a loading shell during the live verification. Do not use it as the primary statistics feed without discovering the underlying API or running a browser adapter."
+      }
+    },
+    "quality": {
+      "contractValid": true,
+      "identity": {
+        "nameMatch": true,
+        "birthDateMatch": true,
+        "teamMatch": true,
+        "confidence": 0.98
+      },
+      "coverage": {
+        "fantacalcio": "complete",
+        "fpedia": "complete",
+        "serieA": "identity_only"
+      },
+      "warnings": [
+        "Height mismatch: Fantacalcio.it reports 189 cm while FPEDIA reports 192 cm.",
+        "Fantacalcio statistics observed for 2025-26 while FPEDIA projection targets 2026-27.",
+        "Lega Serie A and FPEDIA report 192 cm while Fantacalcio.it reports 189 cm.",
+        "Lega Serie A aggregate player statistics were not available through a stable simple HTTP response during verification; source retained for identity only."
+      ]
+    }
+  },
+  {
+    "schemaVersion": "1.1.0",
+    "snapshotId": "84156892-dd65-4383-ac68-cf9396db51cf",
+    "collectedAt": "2026-08-06T21:49:00Z",
+    "targetSeason": "2026-27",
+    "player": {
+      "id": "0d3492bc-2bdf-432c-80ea-59ea9d24a026",
+      "canonicalName": "Moise Kean",
+      "normalizedName": "moise kean",
+      "birthDate": "2000-02-28",
+      "team": "Fiorentina",
+      "roles": {
+        "classic": [
+          "A"
+        ],
+        "mantra": [
+          "Pc"
+        ]
+      },
+      "sourceIds": {
+        "fantacalcio": 2097,
+        "fpedia": 2556,
+        "serieA": "bioty-moise-kean"
+      }
+    },
+    "eligibility": {
+      "status": "active",
+      "canonicalSource": "fantacalcio.it",
+      "verified": true,
+      "verificationMethod": "current_roster",
+      "verifiedAt": "2026-08-06T21:49:00Z",
+      "notes": [
+        "Official Fiorentina profile/roster page contains player ID 2097."
+      ]
+    },
+    "sources": {
+      "fantacalcio": {
+        "status": "success",
+        "url": "https://www.fantacalcio.it/serie-a/squadre/fiorentina/kean/2097/2025-26",
+        "evidence": {
+          "retrievalMode": "live_http_research_proxy",
+          "observedAt": "2026-08-06T21:49:00Z",
+          "httpStatus": null,
+          "contentType": "text/html",
+          "contentSha256": null,
+          "parserVersion": "fantacalcio-parser@0.1.0",
+          "accessVerified": true,
+          "responseShape": "server_rendered_html"
+        },
+        "data": {
+          "playerId": 2097,
+          "name": "Moise Kean",
+          "team": "Fiorentina",
+          "birthDate": "2000-02-28",
+          "heightCm": 183,
+          "foot": "Dx",
+          "nationalities": [
+            "Italia",
+            "Costa d'Avorio"
+          ],
+          "seasonObserved": "2025-26",
+          "ratings": {
+            "average": 5.88,
+            "fantasyAverage": 6.77
+          },
+          "quotations": {
+            "classic": 16,
+            "mantra": 16
+          },
+          "fvmPer1000": {
+            "classic": 40,
+            "mantra": 37
+          },
+          "stats": {
+            "appearancesWithGrade": 26,
+            "goals": 8,
+            "assists": 1,
+            "yellowCards": 4,
+            "redCards": 0,
+            "ownGoals": 0,
+            "goalsConceded": null,
+            "penaltiesScored": 2,
+            "penaltiesTaken": 2,
+            "penaltiesSaved": null
+          },
+          "availabilitySummary": {
+            "started": 23,
+            "entered": 3,
+            "suspended": 0,
+            "injured": 0,
+            "unused": 12
+          }
+        }
+      },
+      "fpedia": {
+        "status": "success",
+        "url": "https://www.fantacalciopedia.com/lista-calciatori-serie-a/attaccanti/2556/kean-moise.html",
+        "evidence": {
+          "retrievalMode": "live_http_research_proxy",
+          "observedAt": "2026-08-06T21:49:00Z",
+          "httpStatus": null,
+          "contentType": "text/html",
+          "contentSha256": null,
+          "parserVersion": "fpedia-parser@0.1.0",
+          "accessVerified": true,
+          "responseShape": "server_rendered_html"
+        },
+        "data": {
+          "playerId": 2556,
+          "name": "KEAN MOISE",
+          "team": "Fiorentina",
+          "role": "ATT",
+          "birthDate": "2000-02-28",
+          "heightCm": 183,
+          "weightKg": 75,
+          "nationality": "Italia",
+          "algorithmScore": 80,
+          "fcpScore": 85,
+          "investmentSolidityPct": 80,
+          "injuryResistancePct": 80,
+          "currentSeason": {
+            "season": "2025-26",
+            "appearances": 26,
+            "fantasyAverage": 6.77,
+            "fantasyAverageAllRounds": 4.63
+          },
+          "history": [
+            {
+              "season": "2025-26",
+              "appearances": 26,
+              "fantasyAverage": 6.77
+            },
+            {
+              "season": "2024-25",
+              "appearances": 29,
+              "fantasyAverage": 8.07
+            },
+            {
+              "season": "2023-24",
+              "appearances": 13,
+              "fantasyAverage": 5.92
+            }
+          ],
+          "projection": {
+            "targetSeason": "2026-27",
+            "appearances": {
+              "raw": "30+",
+              "min": 30,
+              "max": null
+            },
+            "goals": {
+              "raw": "16/19",
+              "min": 16,
+              "max": 19
+            },
+            "assists": {
+              "raw": "3/5",
+              "min": 3,
+              "max": 5
+            }
+          },
+          "skills": [
+            "Fuoriclasse",
+            "Titolare",
+            "Buona Media",
+            "Goleador",
+            "Rigorista",
+            "Falloso"
+          ],
+          "flags": {
+            "newSigning": false,
+            "injured": true,
+            "recommendedNextRound": false
+          }
+        }
+      },
+      "serieA": {
+        "status": "partial",
+        "profileUrl": "https://www1.legaseriea.it/players/bioty-moise-kean",
+        "statisticsUrl": "https://www.legaseriea.it/players/bioty-moise-kean/statistics",
+        "evidence": {
+          "retrievalMode": "live_http_research_proxy",
+          "observedAt": "2026-08-06T21:49:00Z",
+          "httpStatus": null,
+          "contentType": "text/html",
+          "contentSha256": null,
+          "parserVersion": "serie-a-parser@0.1.0",
+          "accessVerified": true,
+          "responseShape": "partial_server_rendered_html"
+        },
+        "access": {
+          "public": true,
+          "authenticationRequired": false,
+          "profileIdentityAvailable": true,
+          "aggregateStatisticsAvailable": false,
+          "simpleHttpCollectionRecommended": false,
+          "browserExecutionLikelyRequired": true,
+          "recommendedUse": "identity_only"
+        },
+        "data": {
+          "identity": {
+            "shirtNumber": 20,
+            "name": "Bioty Moise Kean",
+            "team": "Fiorentina",
+            "nationality": "Italy",
+            "position": "Forward",
+            "birthDate": "2000-02-28",
+            "heightCm": 183,
+            "weightKg": 67
+          },
+          "statistics": {
+            "status": "no_data_for_selected_season",
+            "season": null,
+            "matchesPlayed": null,
+            "minutesPlayed": null,
+            "goals": null,
+            "assists": null,
+            "yellowCards": null,
+            "redCards": null,
+            "shotsTotal": null,
+            "shotsOnTarget": null,
+            "passingAccuracyPct": null,
+            "distanceKmTotal": null
+          }
+        },
+        "reason": "The public profile identity is server-rendered, but the aggregate statistics page returned NO DATA AVAILABLE or a loading shell during the live verification. Do not use it as the primary statistics feed without discovering the underlying API or running a browser adapter."
+      }
+    },
+    "quality": {
+      "contractValid": true,
+      "identity": {
+        "nameMatch": true,
+        "birthDateMatch": true,
+        "teamMatch": true,
+        "confidence": 1.0
+      },
+      "coverage": {
+        "fantacalcio": "complete",
+        "fpedia": "complete",
+        "serieA": "identity_only"
+      },
+      "warnings": [
+        "Fantacalcio statistics observed for 2025-26 while FPEDIA projection targets 2026-27.",
+        "FPEDIA currently marks the player as injured; this flag is time-sensitive.",
+        "Lega Serie A reports 67 kg while FPEDIA reports 75 kg.",
+        "Lega Serie A aggregate player statistics were not available through a stable simple HTTP response during verification; source retained for identity only."
+      ]
+    }
+  }
+]

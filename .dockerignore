@@ -1,0 +1,9 @@
+node_modules
+.git
+.env
+runtime
+apps/*/runtime
+coverage
+packages/design-system/dist
+apps/web-bff/public/design-system
+.DS_Store
