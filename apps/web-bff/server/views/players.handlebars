@@ -3,7 +3,7 @@
   <fanta-search target="players-table" placeholder="Cerca giocatore"></fanta-search>
 </section>
 
-{{#if imported}}<p class="flash flash--success">Importati {{imported}} giocatori dal listone Fantacalcio.it.</p>{{/if}}
+{{#if listoneStarted}}<p class="flash flash--success">Import del listone avviato: dura qualche minuto, l'esito compare qui sotto (ricarica la pagina per aggiornarlo).</p>{{/if}}
 {{#if importError}}<p class="flash flash--error">Import non riuscito: {{importError}}</p>{{/if}}
 {{#if fpediaStarted}}<p class="flash flash--success">Enrichment FPEDIA ({{fpediaStarted}}) avviato: puoi seguirne l'avanzamento qui sotto.</p>{{/if}}
 {{#if fpediaError}}<p class="flash flash--error">Enrichment FPEDIA non riuscito: {{fpediaError}}</p>{{/if}}
@@ -20,7 +20,17 @@
     <h2>Listone completo</h2>
     <form method="post" action="/players/import"><fanta-button type="submit">Importa listone da Fantacalcio.it</fanta-button></form>
   </div>
-  <p class="panel__hint">Scarica ruolo, quotazione e FVM aggiornati per tutti i giocatori di Serie A da Fantacalcio.it (richiede qualche secondo).</p>
+  <p class="panel__hint">Scarica ruolo, quotazione e FVM aggiornati per tutti i giocatori di Serie A da Fantacalcio.it, poi risolve i nomi completi su FPEDIA. Gira in background e richiede qualche minuto: l'esito compare qui sotto.</p>
+  <p class="panel__hint">
+    {{#if listoneRun}}
+      Ultimo import:
+      {{#if (eq listoneRun.status "RUNNING")}}in corso, avviato il {{listoneRun.startedAt}}. <a href="/players">Aggiorna</a>{{/if}}
+      {{#if (eq listoneRun.status "SUCCESS")}}completato il {{listoneRun.finishedAt}} — {{listoneRun.result.imported}} giocatori importati, {{listoneRun.result.removed}} marcati come rimossi, {{listoneRun.result.identity.reconciled}}/{{listoneRun.result.identity.total}} nomi risolti.{{/if}}
+      {{#if (eq listoneRun.status "FAILED")}}<strong>fallito</strong> il {{listoneRun.finishedAt}}: {{listoneRun.error}}{{/if}}
+    {{else}}
+      Nessun import del listone ancora eseguito.
+    {{/if}}
+  </p>
 </section>
 
 <section class="panel admin-panel">

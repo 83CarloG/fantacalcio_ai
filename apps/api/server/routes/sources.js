@@ -7,11 +7,20 @@ const recalculateIndicators = require("../../src/indicators/services/recalculate
 const FPEDIA_MODES = {full: enrichFpedia.full, stale: enrichFpedia.stale, "retry-failed": enrichFpedia.retryFailed};
 
 module.exports = async function sourcesRoutes(fastify) {
-    // on-demand only: this makes a live outbound request to Fantacalcio.it and writes
-    // ~500 rows, so it is never run as part of bootstrap/seed (see ADR-0005).
+    // On-demand only: this makes live outbound requests to Fantacalcio.it and writes ~500
+    // rows, so it is never run as part of bootstrap/seed (see ADR-0005).
+    // Fire-and-forget, like the FPEDIA batch below and for the same reason: the full import
+    // (1 bulk fetch + ~1000 writes + per-player identity reconciliation, which can fall back
+    // to one detail-page fetch per unmatched player) runs for minutes, well past the BFF's
+    // 20s HTTP client timeout (apps/web-bff/src/drivers/backendApi.js). The response confirms
+    // the run started; the outcome is polled from the status endpoint below.
     fastify.post("/v1/sources/fantacalcio/listone", async function (request, reply) {
-        const data = await importFantacalcioListone(request.body && request.body.url);
-        return reply.send({data});
+        const data = await importFantacalcioListone.start(request.body && request.body.url);
+        return reply.code(202).send({data});
+    });
+
+    fastify.get("/v1/sources/fantacalcio/listone/status", async function (request, reply) {
+        return reply.send({data: await importFantacalcioListone.status()});
     });
 
     // Fire-and-forget: a full FPEDIA batch touches ~500 pages at 2 requests/s-ish with

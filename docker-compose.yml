@@ -9,6 +9,9 @@ services:
       DATABASE_KIND: sqlite
       SQLITE_FILE: ./runtime/fanta.sqlite
       REDIS_URL: redis://redis:6379
+      # was absent: the value in .env is only used for compose-file substitution, never
+      # injected into the container, so tuning it had no effect on the API's outbound fetches
+      HTTP_TIMEOUT_MS: ${HTTP_TIMEOUT_MS:-20000}
     volumes:
       - api_runtime:/app/runtime
     ports: ["3000:3000"]

@@ -39,6 +39,9 @@ const upsertFpediaSyncState = require(path.join(apiRoot, "src/sources/jobs/upser
 const createDatasetSnapshot = require(path.join(apiRoot, "src/snapshots/services/createDatasetSnapshot"));
 const getDatasetSnapshot = require(path.join(apiRoot, "src/snapshots/services/getDatasetSnapshot"));
 const recordPlayerSnapshot = require(path.join(apiRoot, "src/sources/jobs/recordPlayerSnapshot"));
+const startImportRun = require(path.join(apiRoot, "src/sources/jobs/startImportRun"));
+const finishImportRun = require(path.join(apiRoot, "src/sources/jobs/finishImportRun"));
+const getLatestImportRun = require(path.join(apiRoot, "src/sources/jobs/getLatestImportRun"));
 const getPlayerIndicators = require(path.join(apiRoot, "src/indicators/services/getPlayerIndicators"));
 
 function samplePlayer(id, overrides = {}) {
@@ -156,4 +159,49 @@ test("the Cömert case: ALG raw 0 + FCP present must NOT collapse the technical 
     // projections missing (15) → confidenceScore 50, never "high"
     assert.equal(indicators.uncertainty.confidenceScore, 50);
     assert.notEqual(indicators.confidence, "high");
+});
+
+test("an import run is RUNNING the moment it starts, so a poller never sees an empty gap", async function () {
+    const runId = await startImportRun("TEST_IMPORT");
+    const running = await getLatestImportRun("TEST_IMPORT");
+    assert.equal(running.runId, runId);
+    assert.equal(running.status, "RUNNING");
+    assert.equal(running.finishedAt, null);
+    assert.equal(running.result, null);
+});
+
+test("a finished run carries its result back out as a parsed object, not JSON text", async function () {
+    const runId = await startImportRun("TEST_IMPORT_SUCCESS");
+    await finishImportRun({runId, status: "SUCCESS", result: {imported: 502, removed: 3}});
+    const done = await getLatestImportRun("TEST_IMPORT_SUCCESS");
+    assert.equal(done.status, "SUCCESS");
+    assert.equal(done.result.imported, 502);
+    assert.ok(done.finishedAt, "a closed run must record when it closed");
+    assert.equal(done.error, null);
+});
+
+test("a failed run keeps its error message instead of silently reading as 'never ran'", async function () {
+    const runId = await startImportRun("TEST_IMPORT_FAILED");
+    await finishImportRun({runId, status: "FAILED", error: "The operation was aborted due to timeout"});
+    const failed = await getLatestImportRun("TEST_IMPORT_FAILED");
+    assert.equal(failed.status, "FAILED");
+    assert.match(failed.error, /timeout/);
+    assert.equal(failed.result, null);
+});
+
+test("only the latest attempt is reported, so a retry after a failure is what the panel shows", async function () {
+    const first = await startImportRun("TEST_IMPORT_RETRY");
+    await finishImportRun({runId: first, status: "FAILED", error: "network down"});
+    const second = await startImportRun("TEST_IMPORT_RETRY");
+    await finishImportRun({runId: second, status: "SUCCESS", result: {imported: 1}});
+    const latest = await getLatestImportRun("TEST_IMPORT_RETRY");
+    assert.equal(latest.runId, second);
+    assert.equal(latest.status, "SUCCESS");
+    // the failed attempt is still on record rather than overwritten
+    const rows = database().prepare("SELECT COUNT(*) AS n FROM source_import_runs WHERE import_type = ?").get("TEST_IMPORT_RETRY");
+    assert.equal(rows.n, 2);
+});
+
+test("an import type that never ran reports null rather than throwing", async function () {
+    assert.equal(await getLatestImportRun("TEST_IMPORT_NEVER_RUN"), null);
 });

@@ -14,6 +14,10 @@
 
 ## Stable lessons
 
+- **A source import that runs for minutes cannot answer inside its own POST.** `POST /v1/sources/fantacalcio/listone` looked like "one bulk fetch", but the *service* also builds the FPEDIA index and reconciles identity per player, with a detail-page fetch as fallback for each unmatched one — minutes of work behind a driver that gives up at 20s (`apps/web-bff/src/drivers/backendApi.js`). The user saw "Import non riuscito: The operation was aborted due to timeout" while the import was still running fine server-side: the work succeeded and the UI reported failure. Fixed by the pattern the FPEDIA batch already used — 202 + a run row polled from a status endpoint (`source_import_runs`, migration 004). Before putting work behind a synchronous route, count the outbound requests the *whole service* makes, not the one the feature name suggests.
+- **A timeout message is the worst possible failure report**: it names the deadline, never the cause. The same import behind the run ledger reports `HTTP 403 for https://www.fantacalcio.it/...` — actionable. Any long-running job needs a place to record *why* it stopped, or every failure looks identical.
+- `HTTP_TIMEOUT_MS` was set in `.env.example` (to 10000, contradicting the config default of 20000) but never passed to the api service in `docker-compose.yml`: Compose reads `.env` for variable substitution in the compose file, it does not inject it into containers. A knob that exists in `.env` and nowhere else is a knob that does nothing under Docker.
+
 - Fantacalcio.it is the canonical eligibility/list identity source.
 - FPEDIA enriches players with projections and qualitative signals.
 - FSTATS is optional and excluded from the MVP critical path.

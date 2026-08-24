@@ -5,6 +5,7 @@ const getPlayerPage = require("../../src/players/services/getPlayerPage");
 const importListone = require("../../src/players/services/importListone");
 const enrichFpedia = require("../../src/players/services/enrichFpedia");
 const getFpediaStatus = require("../../src/players/services/getFpediaStatus");
+const getListoneStatus = require("../../src/players/services/getListoneStatus");
 const recalculateIndicators = require("../../src/players/services/recalculateIndicators");
 const createDatasetSnapshot = require("../../src/players/services/createDatasetSnapshot");
 const importSeasonStats = require("../../src/players/services/importSeasonStats");
@@ -36,9 +37,10 @@ module.exports = async function pageRoutes(fastify) {
             title: "Giocatori",
             players: await listPlayers(query.role),
             fpediaStatus: await getFpediaStatus(),
+            listoneRun: await getListoneStatus(),
             path: request.url,
             // flash state from the admin action redirects below, read once and not persisted anywhere
-            imported: query.imported,
+            listoneStarted: query.listoneStarted,
             importError: query.importError,
             fpediaStarted: query.fpediaStarted,
             fpediaError: query.fpediaError,
@@ -54,9 +56,12 @@ module.exports = async function pageRoutes(fastify) {
     });
     fastify.post("/players/import", async function (_request, reply) {
         // Fastify 5's reply.redirect() takes (url, code) — url first, code second
+        // The API answers 202 as soon as the run is on record: this redirect reports that the
+        // import STARTED, never that it finished. The outcome shows up in the run panel, fed
+        // by GET /v1/sources/fantacalcio/listone/status.
         try {
             const result = await importListone();
-            return reply.redirect(`/players?imported=${result.imported}`, 303);
+            return reply.redirect(`/players?listoneStarted=${encodeURIComponent(result.status)}`, 303);
         } catch (error) {
             return reply.redirect(`/players?importError=${encodeURIComponent(error.message)}`, 303);
         }
