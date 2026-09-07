@@ -44,6 +44,20 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
 
+  # Read-only DB browser for the REAL sqlite file (dev/diagnostic tool, not part of the app's
+  # runtime). Bind-mounts the host `./runtime` directory directly — the SAME file
+  # `npm run dev:api` writes to locally — NOT the `api_runtime` named volume above, which is a
+  # separate copy used only when the `api` service itself runs in Docker (see LEARNED.md's
+  # note on that exact confusion). Start on demand: `docker compose --profile tools up -d
+  # sqlite-web`, then open http://localhost:8080. Never starts with a plain `docker compose up`.
+  sqlite-web:
+    image: coleifer/sqlite-web
+    profiles: ["tools"]
+    command: ["sqlite_web", "-H", "0.0.0.0", "-r", "/data/fanta.sqlite"]
+    volumes:
+      - ./runtime:/data:ro
+    ports: ["8080:8080"]
+
 volumes:
   api_runtime:
   mysql_data:

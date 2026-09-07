@@ -1,0 +1,30 @@
+<section class="page-heading">
+  <div><p class="eyebrow">Preparazione asta {{season}}</p><h1>La mia lista</h1><p>Costruisci la tua watchlist prima dell'asta — {{targetCount}} giocatori segnati finora. Cerca e aggiungi in blocco, senza aprire ogni scheda singolarmente.</p></div>
+  <a class="panel__link" href="/live/suggest">Vai ai suggerimenti &rarr;</a>
+</section>
+
+<section class="panel">
+  <fanta-search target="watchlist-table" placeholder="Cerca giocatore"></fanta-search>
+  <table class="data-table" id="watchlist-table" style="margin-top:var(--fanta-space-4)">
+    <thead><tr><th>Giocatore</th><th>Squadra</th><th>Ruolo</th><th>Stato</th><th></th></tr></thead>
+    <tbody>
+    {{#each players}}
+      <tr data-quick-actions-row data-search="{{this.name}} {{this.full_name}} {{this.team}}">
+        <td>{{this.name}}</td>
+        <td class="run-line__detail">{{this.team}}</td>
+        <td><fanta-badge tone="{{this.role}}">{{this.role}}</fanta-badge></td>
+        <td class="target-status">{{#if this.isTarget}}★ Nel mirino{{/if}}</td>
+        <td>
+          <fanta-quick-actions
+            data-player-id="{{this.player_id}}"
+            {{#if this.isTarget}}data-target-active{{/if}}
+            data-actions='[{"action":"toggle-target","label":"{{#if this.isTarget}}Rimuovi da lista{{else}}Aggiungi a lista{{/if}}"},{"action":"open-profile","label":"Vai alla scheda"}]'>
+          </fanta-quick-actions>
+        </td>
+      </tr>
+    {{else}}
+      <tr class="empty-state"><td colspan="5">Nessun giocatore attivo trovato.</td></tr>
+    {{/each}}
+    </tbody>
+  </table>
+</section>

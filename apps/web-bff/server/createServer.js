@@ -3,8 +3,10 @@ const path = require("node:path");
 const Fastify = require("fastify");
 const view = require("@fastify/view");
 const staticPlugin = require("@fastify/static");
+const formbody = require("@fastify/formbody");
 const handlebars = require("handlebars");
 const pageRoutes = require("./routes/pages");
+const liveRoutes = require("./routes/live");
 handlebars.registerHelper("json", function (value) { return JSON.stringify(value, null, 2); });
 // used by the header nav to mark the current section active
 handlebars.registerHelper("eq", function (a, b) { return a === b; });
@@ -27,20 +29,28 @@ const WARNING_LABELS = {
     "ALG not computed for this player: technical prior uses FCP only.": "Algoritmo FPEDIA non ancora calcolato per questo giocatore: la valutazione tecnica usa solo il punteggio editoriale FCP.",
     "No editorial signal usable: technical prior unavailable from FCP/ALG.": "Nessun segnale editoriale utilizzabile: valutazione tecnica non derivabile da FCP/ALG.",
     "Scarcity/VORP use demand-based replacement (24/64/64/48), uncalibrated.": "Scarsità e VORP usano il replacement basato sulla domanda reale di rosa (24/64/64/48), non ancora calibrato.",
-    "Technical score unavailable: no usable technical input for this player.": "Punteggio tecnico non disponibile: nessun input tecnico utilizzabile per questo giocatore."
+    "Technical score unavailable: no usable technical input for this player.": "Punteggio tecnico non disponibile: nessun input tecnico utilizzabile per questo giocatore.",
+    "Expected price unavailable: this player has no FVM quotation in the listone yet.": "Prezzo atteso non disponibile: questo giocatore non ha ancora una quotazione FVM nel listone."
 };
 handlebars.registerHelper("warningLabel", function (value) { return WARNING_LABELS[value] || value; });
+// plain-language label + a lowercase modifier class for the run-status pill (players.handlebars)
+const RUN_STATUS_LABELS = {SUCCESS: "Completato", RUNNING: "In corso", FAILED: "Fallito"};
+handlebars.registerHelper("runStatusLabel", function (value) { return RUN_STATUS_LABELS[value] || "Non eseguito"; });
 module.exports = async function createServer() {
     const app = Fastify({logger: true});
-    // Fastify 415s any request body content-type it has no parser for, even when the route
-    // never reads request.body (e.g. the plain <form method="post"> action buttons on this
-    // site, which carry no fields). A real form-field parser (@fastify/formbody) is not worth
-    // pulling in until a route actually needs to read posted fields — this just lets the
-    // (unused) body through.
-    app.addContentTypeParser("application/x-www-form-urlencoded", function (_request, _payload, done) { done(null, undefined); });
-    await app.register(view, {engine: {handlebars}, root: path.join(__dirname, "views"), layout: "layouts/main.handlebars"});
+    // Real form-field parsing: the auction live page's forms (record a pick, add a manager)
+    // need actual posted fields, unlike the bodyless admin action buttons elsewhere on this
+    // site (which just POST to a distinct path/segment and never read request.body).
+    await app.register(formbody);
+    // No global `layout` here (Task F): @fastify/view refuses to combine a global layout
+    // with a per-render override ("A layout can either be set globally or on render, not
+    // both"), and the Live app needs its own minimal layout — so every route passes its
+    // layout explicitly instead (see MAIN_LAYOUT in routes/pages.js, LIVE_LAYOUT in
+    // routes/live.js).
+    await app.register(view, {engine: {handlebars}, root: path.join(__dirname, "views")});
     // __dirname-relative so this works both from the repo root and from `npm --workspace`
     await app.register(staticPlugin, {root: path.resolve(__dirname, "..", "public"), prefix: "/assets/"});
     await app.register(pageRoutes);
+    await app.register(liveRoutes);
     return app;
 };

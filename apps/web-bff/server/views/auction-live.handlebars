@@ -1,0 +1,115 @@
+<section class="page-heading">
+  <div><p class="eyebrow">Asta {{season}}</p><h1>Gestione asta</h1><p>Manager, regole, lista e correzioni — la partita vera si gioca in <a href="/live">Asta live</a>.</p></div>
+  <div style="display:flex;gap:var(--fanta-space-3);align-items:center;flex-wrap:wrap">
+    <a class="panel__link" href="/auction/live/watchlist">Gestisci la mia lista</a>
+    {{#if hasManagers}}<a class="panel__link" href="/auction/live/export.xlsx">Esporta rose (.xlsx)</a>{{/if}}
+    {{#if hasManagers}}
+    <form method="post" action="/auction/live/reset" onsubmit="return confirm('Azzerare aggiudicazioni e turno di questa stagione? Manager, regole e la tua lista restano.');">
+      <fanta-button type="submit" variant="outline" tone="danger">Reset asta</fanta-button>
+    </form>
+    {{/if}}
+  </div>
+</section>
+{{#if resetDone}}<p class="flash flash--success">Asta azzerata: aggiudicazioni e turno ripartono da capo.</p>{{/if}}
+
+{{#if managerAdded}}<p class="flash flash--success">Manager "{{managerAdded}}" aggiunto.</p>{{/if}}
+{{#if managerError}}<p class="flash flash--error">Impossibile aggiungere il manager: {{managerError}}</p>{{/if}}
+{{#if pickRecorded}}<p class="flash flash--success">Aggiudicazione registrata.</p>{{/if}}
+{{#if pickError}}<p class="flash flash--error">Impossibile registrare: {{pickError}}</p>{{/if}}
+{{#if pickDeleted}}<p class="flash flash--success">Aggiudicazione annullata.</p>{{/if}}
+{{#if ownerSet}}<p class="flash flash--success">Manager "io" impostato.</p>{{/if}}
+
+{{#if hasManagers}}
+<section class="panel live-entry">
+  <div>
+    <p class="toolbar-label" style="margin:0">Pronto a giocare?</p>
+    <p class="panel__hint" style="margin:0">Turno, fischietto e registrazione aggiudicazioni sono nell'app Live — un'interfaccia minimale pensata per l'asta vera.</p>
+  </div>
+  <a href="/live" class="cta">Vai all'asta live &rarr;</a>
+</section>
+{{/if}}
+
+<section class="panel">
+  <div class="panel__header"><h2>Manager</h2></div>
+  {{#if hasManagers}}
+  <table class="data-table">
+    <thead><tr><th>#</th><th>Manager</th><th>Budget</th><th>Speso</th><th>Residuo</th><th>P</th><th>D</th><th>C</th><th>A</th><th></th></tr></thead>
+    <tbody>
+    {{#each managers}}
+      <tr>
+        <td class="run-line__detail">{{this.callOrder}}</td>
+        <td>{{this.name}}{{#if this.isOwner}} <span class="status-pill status-pill--SUCCESS"><span class="status-pill__dot"></span>Io</span>{{/if}}</td>
+        <td class="run-line__detail">{{this.budgetTotal}} cr</td>
+        <td class="run-line__detail">{{this.spent}} cr</td>
+        <td class="run-line__detail">{{this.remaining}} cr</td>
+        <td class="run-line__detail">{{this.slotsByRole.P}}/{{this.slotsTarget.P}}</td>
+        <td class="run-line__detail">{{this.slotsByRole.D}}/{{this.slotsTarget.D}}</td>
+        <td class="run-line__detail">{{this.slotsByRole.C}}/{{this.slotsTarget.C}}</td>
+        <td class="run-line__detail">{{this.slotsByRole.A}}/{{this.slotsTarget.A}}</td>
+        <td>{{#unless this.isOwner}}<form method="post" action="/auction/live/managers/{{this.id}}/owner"><fanta-button type="submit" variant="outline">Sono io</fanta-button></form>{{/unless}}</td>
+      </tr>
+    {{/each}}
+    </tbody>
+  </table>
+  {{else}}
+  <p class="panel__hint">Nessun manager registrato. Aggiungine almeno uno per iniziare a registrare le aggiudicazioni.</p>
+  {{/if}}
+  <p class="toolbar-label">Aggiungi manager</p>
+  <form method="post" action="/auction/live/managers" class="form-grid" onsubmit="return confirm('Aggiungere questo manager alla lega?');">
+    <label>Nome<input type="text" name="name" required></label>
+    <label>Budget (cr)<input type="number" name="budgetTotal" value="{{budgetPerManagerDefault}}" min="1" step="1" required></label>
+    <fanta-button type="submit" variant="outline">Aggiungi</fanta-button>
+  </form>
+</section>
+
+<section class="panel">
+  <div class="panel__header"><h2>Registra aggiudicazione</h2></div>
+  {{#if hasManagers}}
+  <form method="post" action="/auction/live/picks" class="form-grid">
+    <label>Giocatore
+      <select name="playerId" required>
+        <option value="" disabled selected>Scegli...</option>
+        {{#each availableByRole}}
+        <optgroup label="{{this.label}}">
+          {{#each this.players}}
+          <option value="{{this.player_id}}">{{this.name}} ({{this.team}}){{#if this.fvm_classic}} &middot; FVM {{this.fvm_classic}}{{/if}}</option>
+          {{/each}}
+        </optgroup>
+        {{/each}}
+      </select>
+    </label>
+    <label>Manager
+      <select name="managerId" required>
+        {{#each managers}}<option value="{{this.id}}">{{this.name}}</option>{{/each}}
+      </select>
+    </label>
+    <label>Prezzo (cr)<input type="number" name="price" min="1" step="1" required></label>
+    <fanta-button type="submit">Registra</fanta-button>
+  </form>
+  {{else}}
+  <p class="panel__hint">Aggiungi almeno un manager prima di registrare un'aggiudicazione.</p>
+  {{/if}}
+</section>
+
+<section class="panel">
+  <div class="panel__header"><h2>Aggiudicazioni registrate</h2><span class="panel__link">{{picks.length}} finora</span></div>
+  {{#if picks.length}}
+  <table class="data-table">
+    <thead><tr><th>Giocatore</th><th>Ruolo</th><th>Manager</th><th>Prezzo</th><th>Ora</th><th></th></tr></thead>
+    <tbody>
+    {{#each picks}}
+      <tr>
+        <td><a href="/players/{{this.playerId}}">{{this.playerName}}</a></td>
+        <td><fanta-badge tone="{{this.playerRole}}">{{this.playerRole}}</fanta-badge></td>
+        <td>{{this.managerName}}</td>
+        <td class="run-line__detail">{{this.price}} cr</td>
+        <td class="run-line__detail">{{this.recordedAt}}</td>
+        <td><form method="post" action="/auction/live/picks/{{this.id}}/delete" onsubmit="return confirm('Annullare questa aggiudicazione?');"><fanta-button type="submit" variant="outline" tone="danger">Annulla</fanta-button></form></td>
+      </tr>
+    {{/each}}
+    </tbody>
+  </table>
+  {{else}}
+  <p class="panel__hint">Nessuna aggiudicazione ancora registrata.</p>
+  {{/if}}
+</section>

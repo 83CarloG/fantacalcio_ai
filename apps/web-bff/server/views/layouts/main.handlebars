@@ -4,6 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>{{title}}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Rajdhani:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
   <link rel="stylesheet" href="/assets/design-system/index.css">
   <link rel="stylesheet" href="/assets/app.css">
   <script defer src="/assets/design-system/index.js"></script>
@@ -12,9 +15,14 @@
 <body>
   <header class="app-header">
     <a class="brand" href="/">Fanta Luminous</a>
-    <nav>
+    <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Apri il menu di navigazione">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <nav id="primary-nav">
       <a href="/" class="{{#if (eq path "/")}}active{{/if}}">Dashboard</a>
+      <a href="/setup" class="{{#if (startsWith path "/setup")}}active{{/if}}">Preparazione</a>
       <a href="/players" class="{{#if (startsWith path "/players")}}active{{/if}}">Giocatori</a>
+      <a href="/auction/live" class="{{#if (startsWith path "/auction")}}active{{/if}}">Gestione asta</a>
       <a href="/design-system" class="{{#if (eq path "/design-system")}}active{{/if}}">Design System</a>
     </nav>
   </header>

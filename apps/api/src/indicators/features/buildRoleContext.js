@@ -48,8 +48,12 @@ module.exports = async function buildRoleContext(role) {
         const usability = assessAlgorithmScoreUsability(data.algorithmScore);
         const ensemble = calculatePreseasonEnsemble({editorialFcpScore: data.editorialFcpScore, algorithmUsable: usability.usable});
         const mids = extractProjectionMidpoints(data.projections);
-        const productionMid = (mids.goalsMid == null && mids.assistsMid == null) ? null
-            : leagueRules.goalPoints * (mids.goalsMid || 0) + leagueRules.assistPoints * (mids.assistsMid || 0);
+        // BOTH midpoints must be real: a missing goals (or assists) projection is not a
+        // measured 0 — treating it as one would silently deflate productionMid against
+        // peers who have a complete pair, on a percentile scale where partial and complete
+        // data must not be compared directly.
+        const productionMid = (mids.goalsMid == null || mids.assistsMid == null) ? null
+            : leagueRules.goalPoints * mids.goalsMid + leagueRules.assistPoints * mids.assistsMid;
         const historical = calculateHistoricalMv(data.history);
         const stats = seasonStats.byPlayerId.get(playerId) || null;
         entries.set(playerId, {playerId, snapshotId, data, usability, ensemble, mids, productionMid, historical, stats});

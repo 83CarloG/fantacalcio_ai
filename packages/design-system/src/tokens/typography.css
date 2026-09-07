@@ -1,5 +1,7 @@
 :root {
-  --fanta-font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --fanta-font-family:Rajdhani,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --fanta-font-family-display:"Chakra Petch",var(--fanta-font-family);
+  --fanta-font-family-mono:"JetBrains Mono",ui-monospace,"Consolas",monospace;
   --fanta-font-size-xs:12px; --fanta-font-size-sm:14px; --fanta-font-size-md:16px; --fanta-font-size-xl:24px; --fanta-font-size-2xl:34px;
   --fanta-font-weight-medium:600; --fanta-font-weight-bold:750;
 }

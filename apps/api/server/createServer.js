@@ -10,6 +10,8 @@ const auctionRoutes = require("./routes/auction");
 const sourcesRoutes = require("./routes/sources");
 const snapshotsRoutes = require("./routes/snapshots");
 const matchdaysRoutes = require("./routes/matchdays");
+const dataHealthRoutes = require("./routes/dataHealth");
+const leagueRoutes = require("./routes/league");
 
 module.exports = async function createServer() {
     const app = Fastify({logger: true});
@@ -23,5 +25,7 @@ module.exports = async function createServer() {
     await app.register(sourcesRoutes);
     await app.register(snapshotsRoutes);
     await app.register(matchdaysRoutes);
+    await app.register(dataHealthRoutes);
+    await app.register(leagueRoutes);
     return app;
 };

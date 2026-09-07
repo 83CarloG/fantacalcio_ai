@@ -30,15 +30,31 @@ test("matchFpediaIdentity does not mistake a two-word surname for an abbreviatio
     assert.equal(result.entry.fpediaId, 3770);
 });
 
-test("matchFpediaIdentity is scoped by role, not just surname", function () {
+test("matchFpediaIdentity prefers a same-role candidate but falls back across roles since Fantacalcio.it, not FPEDIA's own index page, is the role source of truth", function () {
+    // FPEDIA files "Paz Nico" under C; Fantacalcio.it's listone says A for this query —
+    // same-role search finds nothing, so it must widen across roles rather than report
+    // NOT_FOUND for a player FPEDIA genuinely has.
     const result = matchFpediaIdentity({name: "Paz N.", role: "A"}, FPEDIA_INDEX);
-    assert.equal(result.status, "NOT_FOUND");
+    assert.equal(result.status, "MATCHED");
+    assert.equal(result.entry.fpediaId, 3803);
 });
 
 test("matchFpediaIdentity reports ambiguity rather than guessing between same-role candidates", function () {
     const result = matchFpediaIdentity({name: "Paz", role: "C"}, FPEDIA_INDEX);
     assert.equal(result.status, "AMBIGUOUS");
     assert.equal(result.candidates.length, 2);
+});
+
+test("matchFpediaIdentity does not let a surname match as a bare string-prefix of a different, longer surname", function () {
+    // real false positive from the 2026-08 listone import: "Zappa" is a string-prefix of
+    // "Zappacosta", so a plain startsWith() reported AMBIGUOUS between two different players.
+    const index = [
+        {fpediaId: 1, fullName: "ZAPPACOSTA DAVIDE", team: "Atalanta", role: "D", url: "u1"},
+        {fpediaId: 2, fullName: "ZAPPA GABRIELE", team: "Cagliari", role: "D", url: "u2"}
+    ];
+    const result = matchFpediaIdentity({name: "Zappa", role: "D"}, index);
+    assert.equal(result.status, "MATCHED");
+    assert.equal(result.entry.fpediaId, 2);
 });
 
 test("resolveFullName reverses a 2-word FPEDIA 'SURNAME GIVENNAME' into natural order", function () {

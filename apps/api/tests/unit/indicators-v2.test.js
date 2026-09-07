@@ -173,3 +173,32 @@ test("a player with a null score gets null relative value, not a rank among the 
     assert.equal(result.vorp, null);
     assert.equal(result.scarcityIndex, null);
 });
+
+test("an undefined demand (role outside P/D/C/A) returns nulls instead of throwing", function () {
+    // leagueRules.rosterDemand[role] is undefined for any role not in P/D/C/A — the `role`
+    // column has no DB constraint, so this must degrade gracefully, not crash the whole
+    // bulk recalculation loop.
+    const result = calculateRelativeValue({playerId: 1, rolePlayers: rolePool([90, 80, 70]), demand: undefined});
+    assert.equal(result.roleRank, null);
+    assert.equal(result.vorp, null);
+    assert.equal(result.scarcityIndex, null);
+});
+
+// ---- historical MV: recency weight follows the actual season gap, not array position ----
+
+test("a gap year in history does not get the 'one year ago' weight", function () {
+    // history has a hole (no 2024-25 season on record — injury/loan abroad/etc.): the
+    // second entry is TWO years back from the most recent, not one, and must be weighted
+    // accordingly rather than by its array position.
+    const withGap = calculateHistoricalMv([
+        {season: "2025-2026", averageVote: 6.00, appearances: 30},
+        {season: "2023-2024", averageVote: 8.00, appearances: 30}
+    ]);
+    const noGap = calculateHistoricalMv([
+        {season: "2025-2026", averageVote: 6.00, appearances: 30},
+        {season: "2024-2025", averageVote: 8.00, appearances: 30}
+    ]);
+    // the two-years-back season must count for LESS than a one-year-back season would,
+    // pulling the weighted average closer to the recent 6.00
+    assert.ok(withGap.weightedMv < noGap.weightedMv);
+});

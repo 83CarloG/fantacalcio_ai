@@ -27,7 +27,10 @@ module.exports = function calculateConfidenceProfile({
     if (!hasHistory) apply(20, "no usable Serie A history");
     else if (maxAppearances < 10) apply(10, "thin historical sample");
     if (!projections || projections.appearances == null) apply(15, "projections missing");
-    if (avgClosedRangeWidth !== null && avgClosedRangeWidth >= 6) apply(10, "wide projection ranges");
+    // avgClosedRangeWidth is now a RELATIVE width (range/midpoint, see buildPlayerIndicators.js)
+    // so this threshold is on a 0-2ish ratio scale, not raw points — 0.5 (range spans half the
+    // midpoint) is the UNCALIBRATED cutoff for "wide enough to matter".
+    if (avgClosedRangeWidth !== null && avgClosedRangeWidth >= 0.5) apply(10, "wide projection ranges");
 
     const expectedInputs = [
         editorialFcpScore != null,

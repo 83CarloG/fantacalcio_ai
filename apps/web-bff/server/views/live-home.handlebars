@@ -1,0 +1,44 @@
+<section class="page-heading">
+  <div><p class="eyebrow">Asta {{season}}</p><h1>Asta live</h1><p>Chiama, valuta, aggiudica.</p></div>
+  <div style="display:flex;gap:var(--fanta-space-3)">
+    <a class="panel__link" href="/live/suggest">Cosa chiamo?</a>
+    <a class="panel__link" href="/live/recap">Andamento</a>
+  </div>
+</section>
+
+{{#if pickRecorded}}<p class="flash flash--success">Aggiudicazione registrata.</p>{{/if}}
+{{#if pickError}}<p class="flash flash--error">Impossibile registrare: {{pickError}}</p>{{/if}}
+{{#if turnAdvanced}}<p class="flash flash--success">Turno passato al prossimo manager.</p>{{/if}}
+
+{{#if hasManagers}}
+<section class="panel">
+  <div class="panel__header"><h2>Giocatore in asta ora</h2></div>
+  <p class="panel__hint">È stato chiamato un giocatore? Selezionalo per vedere i suoi indicatori e il consiglio rilancio/fermati in tempo reale.</p>
+  <select class="call-select" onchange="if(this.value) location.href='/live/call/'+this.value;">
+    <option value="">Scegli il giocatore chiamato...</option>
+    {{#each availableByRole}}
+    <optgroup label="{{this.label}}">
+      {{#each this.players}}
+      <option value="{{this.player_id}}">{{this.name}} ({{this.team}})</option>
+      {{/each}}
+    </optgroup>
+    {{/each}}
+  </select>
+</section>
+
+<section class="panel turn-panel">
+  <div class="turn-panel__row">
+    <div>
+      <p class="toolbar-label" style="margin:0">Turno di chiamata</p>
+      {{#if currentCaller}}
+      <p class="turn-panel__name">{{currentCaller.name}}{{#if isOwnerTurn}} <span class="status-pill status-pill--SUCCESS"><span class="status-pill__dot"></span>Tocca a te</span>{{/if}}</p>
+      {{else}}
+      <p class="panel__hint" style="margin:0">Nessun turno impostato.</p>
+      {{/if}}
+    </div>
+    <form method="post" action="/live/turn/advance"><fanta-button type="submit" variant="outline">Chiamata successiva &rarr;</fanta-button></form>
+  </div>
+</section>
+{{else}}
+<p class="panel__hint">Nessun manager registrato ancora — vai in <a href="/auction/live">Gestione asta</a> per aggiungerne almeno uno.</p>
+{{/if}}

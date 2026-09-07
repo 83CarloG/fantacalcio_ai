@@ -3,7 +3,7 @@
 </section>
 
 {{#unless indicators}}
-<p class="flash flash--warning">Dati non ancora disponibili per questo giocatore: è in attesa di arricchimento FPEDIA (o non è mai stato trovato su FPEDIA). Il prezzo atteso e la valutazione offerta non possono essere calcolati finché non ci sono questi dati.</p>
+<p class="flash flash--warning">Dati non ancora disponibili per questo giocatore: è in attesa di arricchimento FPEDIA (o non è mai stato trovato su FPEDIA). Punteggi e prezzo atteso non possono essere calcolati finché non ci sono questi dati.</p>
 {{/unless}}
 
 {{#if indicators}}
@@ -26,26 +26,82 @@
   </div>
   <div>
     <fanta-stat-card label="Expected price" value="{{indicators.market.expectedPrice}}" suffix=" cr" trend="neutral"></fanta-stat-card>
-    <span class="stat-caption">prezzo atteso all'asta, in crediti</span>
+    <span class="stat-caption">{{confidenceLabel display.confidence}} sulla valutazione complessiva</span>
   </div>
 </section>
 
-<section class="panel evaluate-panel">
-  <div class="panel__header"><h2>Valuta l'offerta</h2><p class="panel__hint">Calibrazione mercato: {{calibrationLabel indicators.market.calibration}} · {{confidenceLabel indicators.market.confidence}}</p></div>
-  <form id="evaluate-form" class="evaluate-form" method="get" action="/players/{{player.player_id}}">
-    <label>Offerta attuale (cr)<input type="number" name="currentBid" min="0" step="1" value="{{bidInput.currentBid}}" required></label>
-    <label>Budget residuo (cr)<input type="number" name="availableBudget" min="0" step="1" value="{{bidInput.availableBudget}}" required></label>
-    <label>Slot residui in rosa<input type="number" name="remainingSlots" min="0" step="1" value="{{bidInput.remainingSlots}}" required></label>
-    <fanta-button type="submit">Valuta rilancio</fanta-button>
-  </form>
-  <div id="evaluate-result" class="evaluate-result">
-    {{#if evaluation}}
-    <p class="evaluate-result__verdict"><fanta-badge tone="{{evaluation.strategy}}">{{#if (eq evaluation.strategy "bid")}}Rilancia{{else}}Ritirati{{/if}}</fanta-badge> rilancio massimo consigliato <strong>{{evaluation.recommendedMaxBid}} cr</strong></p>
-    <p class="evaluate-result__detail">Riserva minima per gli slot residui: {{evaluation.minimumReserve}} cr · budget disponibile dopo la riserva: {{evaluation.affordableBudget}} cr</p>
+{{#if display.reasons.length}}
+<section class="panel">
+  <div class="panel__header"><h2>Perché questa valutazione</h2></div>
+  <ul class="reasons-list">
+    {{#each display.reasons}}<li>{{this}}</li>{{/each}}
+  </ul>
+</section>
+{{/if}}
+
+<section class="panel">
+  <div class="panel__header"><h2>Punteggio tecnico</h2></div>
+  <p class="panel__hint">Come si arriva al Technical score qui sopra: segnali editoriali, proiezione, storico, disponibilità.</p>
+  <div class="kv-grid">
+    {{#each display.technical}}
+    <div class="kv-row">
+      <span class="kv-row__label">{{this.label}}</span>
+      <span class="kv-row__value">{{#if (eq this.value null)}}—{{else}}{{this.value}}{{/if}}{{#if this.detail}} <span class="kv-row__detail">({{this.detail}})</span>{{/if}}</span>
+    </div>
+    {{/each}}
+  </div>
+</section>
+
+<section class="panel">
+  <div class="panel__header"><h2>Rischio e affidabilità</h2></div>
+  <p class="panel__hint">Quanto è rischioso puntarci e quanto ci si può fidare di questa valutazione.</p>
+  <div class="kv-grid">
+    {{#each display.risk}}
+    <div class="kv-row">
+      <span class="kv-row__label">{{this.label}}</span>
+      <span class="kv-row__value">{{#if (eq this.value null)}}—{{else}}{{this.value}}{{/if}}</span>
+    </div>
+    {{/each}}
+  </div>
+</section>
+
+<section class="panel">
+  <div class="panel__header"><h2>Valore relativo nel ruolo</h2></div>
+  <p class="panel__hint">Quanto vale rispetto agli altri giocatori dello stesso ruolo, non in assoluto.</p>
+  <div class="kv-grid">
+    {{#each display.relativeValue}}
+    <div class="kv-row">
+      <span class="kv-row__label">{{this.label}}</span>
+      <span class="kv-row__value">{{#if (eq this.value null)}}—{{else}}{{this.value}}{{/if}}</span>
+    </div>
+    {{/each}}
+  </div>
+</section>
+
+<section class="panel">
+  <div class="panel__header"><h2>Mercato</h2></div>
+  <p class="panel__hint">Calibrazione: {{calibrationLabel indicators.market.calibration}} &middot; {{confidenceLabel indicators.market.confidence}}</p>
+  <div class="kv-grid">
+    <div class="kv-row"><span class="kv-row__label">Prezzo atteso</span><span class="kv-row__value">{{#if (eq indicators.market.expectedPrice null)}}—{{else}}{{indicators.market.expectedPrice}} cr{{/if}}</span></div>
+    {{#if indicators.market.range}}
+    <div class="kv-row"><span class="kv-row__label">Intervallo plausibile</span><span class="kv-row__value">{{indicators.market.range.low}}&ndash;{{indicators.market.range.high}} cr</span></div>
     {{/if}}
-    {{#if evaluationError}}<p class="form-error">Impossibile valutare l'offerta: {{evaluationError}}</p>{{/if}}
   </div>
 </section>
 
-<section class="panel"><h2>Trasparenza modello</h2><p class="panel__hint">Output grezzo e versionato usato per calcolare gli indicatori sopra.</p><pre class="code-block">{{json indicators}}</pre></section>
+{{#if display.leagueSpecific}}
+<section class="panel">
+  <div class="panel__header"><h2>Dati specifici di lega</h2></div>
+  <div class="kv-grid">
+    {{#each display.leagueSpecific}}
+    <div class="kv-row">
+      <span class="kv-row__label">{{this.label}}</span>
+      <span class="kv-row__value">{{#if (eq this.value null)}}—{{else}}{{this.value}}{{/if}}</span>
+    </div>
+    {{/each}}
+  </div>
+</section>
+{{/if}}
+
+<p class="model-meta">Modello {{display.meta.modelVersion}} &middot; stagione {{display.meta.modelSeason}} &middot; calcolato il {{display.meta.computedAt}}</p>
 {{/if}}

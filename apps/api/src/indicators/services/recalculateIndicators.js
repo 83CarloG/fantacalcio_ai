@@ -2,6 +2,8 @@
 const buildRoleContext = require("../features/buildRoleContext");
 const buildPlayerIndicators = require("../features/buildPlayerIndicators");
 const recordIndicatorSnapshot = require("../jobs/recordIndicatorSnapshot");
+const getIndicatorCoverage = require("../jobs/getIndicatorCoverage");
+const getIndicatorStaleness = require("../jobs/getIndicatorStaleness");
 const getPlayer = require("../../players/jobs/getPlayer");
 const listActivePlayerIds = require("../../players/jobs/listActivePlayerIds");
 
@@ -41,4 +43,14 @@ async function all(datasetSnapshotId = null) {
     return {total: results.length, recalculated: results.filter((result) => result.recalculated).length};
 }
 
-module.exports = {one, all};
+/** How much of the ACTIVE roster already has a persisted indicator snapshot, for the setup/admin status view. */
+async function coverage() {
+    return getIndicatorCoverage();
+}
+
+/** Age distribution of the ACTIVE roster's most recent indicator snapshot, for the data-health page. */
+async function staleness() {
+    return getIndicatorStaleness();
+}
+
+module.exports = {one, all, coverage, staleness};

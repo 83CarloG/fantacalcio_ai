@@ -1,6 +1,33 @@
 <section class="page-heading">
   <div><p class="eyebrow">Asta 2026/27</p><h1>Dashboard decisionale</h1><p>Valore tecnico, prezzo atteso, rischio e scarsità separati.</p></div>
 </section>
+
+{{#unless setup.allDone}}
+<section class="setup-panel">
+  <div class="setup-panel__head">
+    <p class="setup-panel__title">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/></svg>
+      Avvio richiesto
+    </p>
+    <span class="setup-panel__count">{{setup.completedCount}} / {{setup.totalSteps}} PASSAGGI COMPLETATI</span>
+  </div>
+  <p class="setup-panel__hint">Prezzo atteso, rischio e scarsità restano N/D finché questi passaggi non sono stati eseguiti almeno una volta.</p>
+  <ol class="setup-steps">
+    {{#each setup.steps}}
+    <li class="setup-step {{#if this.done}}setup-step--done{{/if}}">
+      <span class="setup-step__marker">{{#if this.done}}<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>{{else}}{{this.number}}{{/if}}</span>
+      <span class="setup-step__label">{{this.label}}</span>
+      <span class="setup-step__detail">{{this.detail}}</span>
+    </li>
+    {{/each}}
+  </ol>
+  <a class="cta" href="/setup">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 8l5-5 5 5M5 21h14"/></svg>
+    Vai alla preparazione
+  </a>
+</section>
+{{/unless}}
+
 <section class="stats-grid">
   <fanta-stat-card label="Giocatori seed" value="{{playerCount}}" trend="neutral"></fanta-stat-card>
   <fanta-stat-card label="Calibrazione mercato" value="2025/26" trend="neutral"></fanta-stat-card>
