@@ -54,6 +54,11 @@ module.exports = function calculateRelativeValue({playerId, rolePlayers, demand}
         .sort((a, b) => b.score - a.score);
     const nulls = {roleRank: null, replacementScore: null, vorp: null, alternativesWithinFive: null, scarcityIndex: null, tier: null};
     if (ranked.length === 0) return nulls;
+    // `demand` comes from leagueRules.rosterDemand[role] (buildRoleContext.js) and is
+    // undefined for any role outside P/D/C/A — the `role` column has no DB constraint, so a
+    // null/blank/unnormalized value is possible. Without this guard, ranked[NaN] below
+    // throws and aborts the entire bulk recalculation loop for every player queued after it.
+    if (demand === null || demand === undefined) return nulls;
 
     const index = ranked.findIndex((p) => p.playerId === playerId);
     if (index === -1) return nulls; // player has no computable score → no relative value

@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{{title}}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Rajdhani:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="/assets/design-system/index.css">
+  <link rel="stylesheet" href="/assets/app.css">
+  <script defer src="/assets/design-system/index.js"></script>
+  <script defer src="/assets/app.js"></script>
+</head>
+<body class="live-mode">
+  <!-- Modalità focus (Task F): niente menu completo — solo il marchio e un link discreto
+       per tornare alla Gestione asta (manager/reset/export), così durante l'asta vera non
+       c'è nulla su cui cliccare per sbaglio. -->
+  <header class="app-header">
+    <span class="brand">Asta live</span>
+    <a class="panel__link" href="/auction/live">&larr; Gestione asta</a>
+  </header>
+  <main class="app-main">{{{body}}}</main>
+</body>
+</html>

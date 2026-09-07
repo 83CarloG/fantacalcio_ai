@@ -13,12 +13,21 @@ const predictPrice = require("../../market/jobs/predictPrice");
 const MODEL_VERSION = "player-indicators@0.2.0";
 const MODEL_SEASON = "2026-27";
 
+// RELATIVE width (range / midpoint), not absolute: appearances ranges are naturally wider
+// in raw units (e.g. "30-36" → width 6) than goals/assists ranges (typically 0-3), so
+// averaging absolute widths let a normal appearances spread alone trip the "wide range"
+// confidence penalty regardless of how precise the goals/assists projections were. A
+// relative width puts all three on a comparable scale; midpoint 0 is skipped (division by
+// zero), same treatment as any other unusable component.
 function avgClosedRangeWidth(projections) {
     if (!projections) return null;
     const widths = [];
     for (const key of ["appearances", "goals", "assists"]) {
         const range = projections[key];
-        if (range && !range.openEnded && range.min != null) widths.push(range.max - range.min);
+        if (!range || range.openEnded || range.min == null) continue;
+        const width = range.max - range.min;
+        const midpoint = (range.max + range.min) / 2;
+        if (midpoint > 0) widths.push(width / midpoint);
     }
     return widths.length ? widths.reduce((s, w) => s + w, 0) / widths.length : null;
 }
@@ -84,8 +93,10 @@ module.exports = async function buildPlayerIndicators({playerId, roleContext}) {
     const technicalScore = entry.currentScore;
 
     // fvm feeds the market model from the flat listone column — the nested seed-fixture
-    // shape the v1 infer() chased never existed in live data (see the 2026-08-10 fix)
-    const fvm = player.fvm_classic ?? 0;
+    // shape the v1 infer() chased never existed in live data (see the 2026-08-10 fix).
+    // Left null when missing (never defaulted to 0 — see predictPrice.js's own guard):
+    // a blank quotation is "no market signal", not a real zero-value quotation.
+    const fvm = player.fvm_classic ?? null;
     const model = await getMarketModel();
     const market = await predictPrice({role: player.role, fvm, model});
 
@@ -96,7 +107,7 @@ module.exports = async function buildPlayerIndicators({playerId, roleContext}) {
     }
     if (historical.hasHistory) reasons.push(`Weighted historical MV ${historical.weightedMv}`);
     else reasons.push("No usable Serie A fantavoto history");
-    if (entry.stats && entry.stats.pv > 0) {
+    if (entry.stats && entry.stats.pv > 0 && entry.stats.fm != null) {
         reasons.push(`Early season: FM ${entry.stats.fm} over ${entry.stats.pv} rated matches (weight ${(entry.earlySeasonWeight * 100).toFixed(0)}%)`);
     }
 
@@ -104,6 +115,7 @@ module.exports = async function buildPlayerIndicators({playerId, roleContext}) {
     warnings.push("Market calibration currently uses one complete auction season only.");
     if (relative.vorp !== null) warnings.push("Scarcity/VORP use demand-based replacement (24/64/64/48), uncalibrated.");
     if (technicalScore === null) warnings.push("Technical score unavailable: no usable technical input for this player.");
+    if (market.reason === "missing_fvm") warnings.push("Expected price unavailable: this player has no FVM quotation in the listone yet.");
 
     return {
         modelVersion: MODEL_VERSION,

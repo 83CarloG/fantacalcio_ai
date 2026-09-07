@@ -1,60 +1,6 @@
 <section class="page-heading">
-  <div><p class="eyebrow">Listone</p><h1>Giocatori</h1><p>{{players.length}} giocatori disponibili.</p></div>
+  <div><p class="eyebrow">Listone</p><h1>Giocatori</h1><p>{{players.length}} giocatori disponibili. <a class="panel__link" href="/setup">Importa/aggiorna dati &rarr;</a></p></div>
   <fanta-search target="players-table" placeholder="Cerca giocatore"></fanta-search>
-</section>
-
-{{#if imported}}<p class="flash flash--success">Importati {{imported}} giocatori dal listone Fantacalcio.it.</p>{{/if}}
-{{#if importError}}<p class="flash flash--error">Import non riuscito: {{importError}}</p>{{/if}}
-{{#if fpediaStarted}}<p class="flash flash--success">Enrichment FPEDIA ({{fpediaStarted}}) avviato: puoi seguirne l'avanzamento qui sotto.</p>{{/if}}
-{{#if fpediaError}}<p class="flash flash--error">Enrichment FPEDIA non riuscito: {{fpediaError}}</p>{{/if}}
-{{#if recalculated}}<p class="flash flash--success">Indicatori ricalcolati per {{recalculated}} giocatori.</p>{{/if}}
-{{#if recalculateError}}<p class="flash flash--error">Ricalcolo non riuscito: {{recalculateError}}</p>{{/if}}
-{{#if snapshotCreated}}<p class="flash flash--success">Snapshot creato: {{snapshotCreated}}</p>{{/if}}
-{{#if snapshotError}}<p class="flash flash--error">Creazione snapshot non riuscita: {{snapshotError}}</p>{{/if}}
-{{#if statsImported}}<p class="flash flash--success">Statistiche stagione importate per {{statsImported}} giocatori (giornata {{statsMatchday}}) e indicatori ricalcolati.</p>{{/if}}
-{{#if statsNotStarted}}<p class="flash flash--warning">La stagione non è ancora iniziata: nessuna statistica da importare (tutti i PV sono a zero).</p>{{/if}}
-{{#if statsError}}<p class="flash flash--error">Import statistiche non riuscito: {{statsError}}</p>{{/if}}
-
-<section class="panel import-panel">
-  <div class="panel__header">
-    <h2>Listone completo</h2>
-    <form method="post" action="/players/import"><fanta-button type="submit">Importa listone da Fantacalcio.it</fanta-button></form>
-  </div>
-  <p class="panel__hint">Scarica ruolo, quotazione e FVM aggiornati per tutti i giocatori di Serie A da Fantacalcio.it (richiede qualche secondo).</p>
-</section>
-
-<section class="panel admin-panel">
-  <div class="panel__header"><h2>Amministrazione dati</h2></div>
-  <p class="panel__hint">
-    Stato FPEDIA:
-    {{#if fpediaStatus.SUCCESS}}{{fpediaStatus.SUCCESS}} completati{{else}}0 completati{{/if}},
-    {{#if fpediaStatus.FAILED_RETRYABLE}}{{fpediaStatus.FAILED_RETRYABLE}} falliti (riprovabili){{else}}0 falliti{{/if}},
-    {{#if fpediaStatus.NEEDS_REVIEW}}{{fpediaStatus.NEEDS_REVIEW}} da rivedere manualmente{{else}}0 da rivedere{{/if}},
-    {{#if fpediaStatus.NOT_FOUND}}{{fpediaStatus.NOT_FOUND}} non trovati su FPEDIA{{else}}0 non trovati{{/if}}.
-  </p>
-  <div class="admin-panel__actions">
-    <form method="post" action="/players/fpedia/enrich/full">
-      <fanta-button type="submit">Avvia enrichment FPEDIA</fanta-button>
-    </form>
-    <form method="post" action="/players/fpedia/enrich/stale">
-      <fanta-button type="submit">Aggiorna FPEDIA stale</fanta-button>
-    </form>
-    <form method="post" action="/players/fpedia/enrich/retry-failed">
-      <fanta-button type="submit">Riprova FPEDIA falliti</fanta-button>
-    </form>
-    <form method="post" action="/players/season-stats/import">
-      <fanta-button type="submit">Importa statistiche giornata</fanta-button>
-    </form>
-    <form method="post" action="/players/indicators/recalculate">
-      <fanta-button type="submit">Ricalcola indicatori</fanta-button>
-    </form>
-    <form method="post" action="/players/snapshots/post-market-baseline" onsubmit="return confirm('Creare uno snapshot POST_MARKET_BASELINE? Una volta creato non può essere modificato.');">
-      <fanta-button type="submit">Crea POST_MARKET_BASELINE</fanta-button>
-    </form>
-    <form method="post" action="/players/snapshots/auction-snapshot" onsubmit="return confirm('Creare un AUCTION_SNAPSHOT? Una volta creato non può essere modificato.');">
-      <fanta-button type="submit">Crea AUCTION_SNAPSHOT</fanta-button>
-    </form>
-  </div>
 </section>
 
 <section class="panel">

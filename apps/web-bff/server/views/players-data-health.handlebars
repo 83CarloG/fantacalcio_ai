@@ -1,0 +1,73 @@
+<section class="page-heading">
+  <div><p class="eyebrow">Diagnostica</p><h1>Salute dei dati</h1><p>Copertura, freschezza degli indicatori e storico degli import.</p></div>
+  <a class="panel__link" href="/setup">&larr; Torna a Preparazione</a>
+</section>
+
+<section class="stats-grid">
+  <div>
+    <fanta-stat-card label="Identità FPEDIA" value="{{coverage.fpediaIdentity.percent}}" suffix="%" trend="neutral"></fanta-stat-card>
+    <span class="stat-caption">{{coverage.fpediaIdentity.count}}/{{coverage.fpediaIdentity.total}} giocatori attivi hanno una corrispondenza FPEDIA</span>
+  </div>
+  <div>
+    <fanta-stat-card label="Copertura indicatori" value="{{coverage.indicators.percent}}" suffix="%" trend="neutral"></fanta-stat-card>
+    <span class="stat-caption">{{coverage.indicators.count}}/{{coverage.indicators.total}} giocatori attivi hanno almeno uno snapshot indicatori</span>
+  </div>
+  <div>
+    {{#if coverage.seasonStats.started}}
+    <fanta-stat-card label="Season stats (G{{coverage.seasonStats.matchday}})" value="{{coverage.seasonStats.percent}}" suffix="%" trend="neutral"></fanta-stat-card>
+    <span class="stat-caption">{{coverage.seasonStats.count}}/{{coverage.seasonStats.total}} giocatori attivi hanno statistiche all'ultima giornata importata</span>
+    {{else}}
+    <fanta-stat-card label="Season stats" value="—" trend="neutral"></fanta-stat-card>
+    <span class="stat-caption">Stagione non ancora iniziata: nessuna statistica da importare</span>
+    {{/if}}
+  </div>
+</section>
+
+<section class="panel">
+  <div class="panel__header"><h2>Freschezza indicatori</h2></div>
+  <p class="panel__hint">Età dell'ultimo calcolo indicatori per i giocatori attivi{{#if staleness.neverComputed}} &middot; {{staleness.neverComputed}} non ancora calcolati mai{{/if}}.</p>
+  <div class="progress__breakdown">
+    {{#each staleness.buckets}}
+    <span class="progress__stat{{#if this.tone}} progress__stat--{{this.tone}}{{/if}}">{{this.count}} {{this.label}}</span>
+    {{/each}}
+  </div>
+  {{#if staleness.mostStale.length}}
+  <table class="data-table">
+    <thead><tr><th>Giocatore</th><th>Squadra</th><th>Ruolo</th><th>Ultimo calcolo</th></tr></thead>
+    <tbody>
+    {{#each staleness.mostStale}}
+      <tr>
+        <td><a href="/players/{{this.playerId}}">{{this.name}}</a></td>
+        <td>{{this.team}}</td>
+        <td><fanta-badge tone="{{this.role}}">{{this.role}}</fanta-badge></td>
+        <td class="run-line__detail">{{this.ageLabel}}</td>
+      </tr>
+    {{/each}}
+    </tbody>
+  </table>
+  {{/if}}
+</section>
+
+<section class="panel">
+  <div class="panel__header"><h2>Storico import</h2></div>
+  {{#if importHistory.length}}
+    {{#each importHistory}}
+    <p class="toolbar-label">{{this.importType}}</p>
+    <table class="data-table">
+      <thead><tr><th>Stato</th><th>Avviato</th><th>Concluso</th><th>Dettaglio</th></tr></thead>
+      <tbody>
+      {{#each this.runs}}
+        <tr>
+          <td><span class="status-pill status-pill--{{this.status}}"><span class="status-pill__dot"></span>{{runStatusLabel this.status}}</span></td>
+          <td class="run-line__detail">{{this.startedAt}}</td>
+          <td class="run-line__detail">{{#if this.finishedAt}}{{this.finishedAt}}{{else}}&mdash;{{/if}}</td>
+          <td class="run-line__detail">{{#if this.error}}{{this.error}}{{else}}&mdash;{{/if}}</td>
+        </tr>
+      {{/each}}
+      </tbody>
+    </table>
+    {{/each}}
+  {{else}}
+    <p class="panel__hint">Nessun import ancora registrato.</p>
+  {{/if}}
+</section>

@@ -1,0 +1,148 @@
+<section class="page-heading">
+  <div><p class="eyebrow">Prima dell'asta</p><h1>Preparazione</h1><p>Il flusso da seguire per arrivare all'asta con dati aggiornati e affidabili.</p></div>
+</section>
+
+<section class="workflow">
+  <div class="workflow-step">
+    <span class="workflow-step__number">1</span>
+    <h3 class="workflow-step__title">Importa il listone</h3>
+    <p class="workflow-step__desc">Scarica ruolo, quotazione e FVM aggiornati da Fantacalcio.it per tutti i giocatori di Serie A.</p>
+    <span class="workflow-step__timing">Appena escono le quotazioni, poi a ogni variazione</span>
+  </div>
+  <div class="workflow-step">
+    <span class="workflow-step__number">2</span>
+    <h3 class="workflow-step__title">Arricchisci con FPEDIA</h3>
+    <p class="workflow-step__desc">Risolve l'identità di ogni giocatore sulle schede FPEDIA e scarica i punteggi editoriali e algoritmici.</p>
+    <span class="workflow-step__timing">Dopo ogni import, poi periodicamente ("stale")</span>
+  </div>
+  <div class="workflow-step">
+    <span class="workflow-step__number">3</span>
+    <h3 class="workflow-step__title">Ricalcola gli indicatori</h3>
+    <p class="workflow-step__desc">Ricompone punteggio tecnico, rischio e valore relativo per ogni giocatore dai dati appena aggiornati.</p>
+    <span class="workflow-step__timing">Automatico dopo l'enrichment, manuale se serve</span>
+  </div>
+  <div class="workflow-step">
+    <span class="workflow-step__number">4</span>
+    <h3 class="workflow-step__title">Crea lo snapshot pre-asta</h3>
+    <p class="workflow-step__desc">Congela lo stato esatto del modello: prezzi attesi e punteggi restano fissi per confrontarli poi con l'asta reale.</p>
+    <span class="workflow-step__timing">Subito prima di aprire l'asta, mai a metà</span>
+  </div>
+</section>
+
+{{#if listoneStarted}}<p class="flash flash--success">Import del listone avviato: dura qualche minuto, l'esito compare qui sotto (ricarica la pagina per aggiornarlo).</p>{{/if}}
+{{#if importError}}<p class="flash flash--error">Import non riuscito: {{importError}}</p>{{/if}}
+{{#if fpediaStarted}}<p class="flash flash--success">Enrichment FPEDIA ({{fpediaStarted}}) avviato: puoi seguirne l'avanzamento qui sotto.</p>{{/if}}
+{{#if fpediaError}}<p class="flash flash--error">Enrichment FPEDIA non riuscito: {{fpediaError}}</p>{{/if}}
+{{#if recalculated}}<p class="flash flash--success">Indicatori ricalcolati per {{recalculated}} giocatori.</p>{{/if}}
+{{#if recalculateError}}<p class="flash flash--error">Ricalcolo non riuscito: {{recalculateError}}</p>{{/if}}
+{{#if snapshotCreated}}<p class="flash flash--success">Snapshot creato: {{snapshotCreated}}</p>{{/if}}
+{{#if snapshotError}}<p class="flash flash--error">Creazione snapshot non riuscita: {{snapshotError}}</p>{{/if}}
+{{#if statsImported}}<p class="flash flash--success">Statistiche stagione importate per {{statsImported}} giocatori (giornata {{statsMatchday}}) e indicatori ricalcolati.</p>{{/if}}
+{{#if statsNotStarted}}<p class="flash flash--warning">La stagione non è ancora iniziata: nessuna statistica da importare (tutti i PV sono a zero).</p>{{/if}}
+{{#if statsError}}<p class="flash flash--error">Import statistiche non riuscito: {{statsError}}</p>{{/if}}
+{{#if rulesSaved}}<p class="flash flash--success">Impostazioni di lega salvate.</p>{{/if}}
+{{#if rulesError}}<p class="flash flash--error">Salvataggio non riuscito: {{rulesError}}</p>{{/if}}
+
+<section class="panel">
+  <div class="panel__header"><h2>Impostazioni di lega</h2></div>
+  <p class="panel__hint">Valgono per la stagione {{#if seasonRules}}{{seasonRules.season}}{{else}}corrente{{/if}} e per le prossime, senza toccare codice — usate come default per budget manager, slot rosa e suggerimenti in asta.</p>
+  <form method="post" action="/setup/league-rules" class="form-grid">
+    <label>Partecipanti<input type="number" name="participants" min="2" step="1" value="{{#if seasonRules}}{{seasonRules.participants}}{{else}}8{{/if}}" required></label>
+    <label>Budget per manager (cr)<input type="number" name="budgetPerManager" min="1" step="1" value="{{#if seasonRules}}{{seasonRules.budgetPerManager}}{{else}}500{{/if}}" required></label>
+    <label>Slot P<input type="number" name="slotsP" min="0" step="1" value="{{#if seasonRules}}{{seasonRules.rosterSlots.P}}{{else}}3{{/if}}" required></label>
+    <label>Slot D<input type="number" name="slotsD" min="0" step="1" value="{{#if seasonRules}}{{seasonRules.rosterSlots.D}}{{else}}8{{/if}}" required></label>
+    <label>Slot C<input type="number" name="slotsC" min="0" step="1" value="{{#if seasonRules}}{{seasonRules.rosterSlots.C}}{{else}}8{{/if}}" required></label>
+    <label>Slot A<input type="number" name="slotsA" min="0" step="1" value="{{#if seasonRules}}{{seasonRules.rosterSlots.A}}{{else}}6{{/if}}" required></label>
+    <fanta-button type="submit" variant="outline">Salva</fanta-button>
+  </form>
+</section>
+
+<section class="panel import-panel">
+  <div class="panel__header">
+    <h2>1&ndash;2. Listone completo</h2>
+    <form method="post" action="/setup/import"><fanta-button type="submit">Importa listone da Fantacalcio.it</fanta-button></form>
+  </div>
+  <p class="panel__hint">Scarica ruolo, quotazione e FVM aggiornati per tutti i giocatori di Serie A da Fantacalcio.it, poi risolve i nomi completi su FPEDIA. Gira in background e richiede qualche minuto: l'esito compare qui sotto.</p>
+  <div id="listone-run-status">
+    {{#if listoneRun}}
+      <p class="run-line">
+        <span class="status-pill status-pill--{{listoneRun.status}}"><span class="status-pill__dot"></span>{{runStatusLabel listoneRun.status}}</span>
+        {{#if (eq listoneRun.status "RUNNING")}}<span class="run-line__detail">avviato il {{listoneRun.startedAt}}</span>{{/if}}
+        {{#if (eq listoneRun.status "SUCCESS")}}<span class="run-line__detail">{{listoneRun.finishedAt}} — {{listoneRun.result.imported}} importati, {{listoneRun.result.removed}} rimossi, {{listoneRun.result.identity.reconciled}}/{{listoneRun.result.identity.total}} nomi risolti</span>{{/if}}
+        {{#if (eq listoneRun.status "FAILED")}}<span class="run-line__detail">{{listoneRun.finishedAt}}: {{listoneRun.error}}</span>{{/if}}
+      </p>
+    {{else}}
+      <p class="run-line"><span class="status-pill status-pill--NONE"><span class="status-pill__dot"></span>Non eseguito</span></p>
+    {{/if}}
+  </div>
+</section>
+
+<section class="panel admin-panel" data-poll="{{pollActive}}">
+  <div class="panel__header"><h2>3&ndash;4. Amministrazione dati</h2><a class="panel__link" href="/players/data-health">Diagnostica dati &rarr;</a></div>
+  <div id="fpedia-progress">
+    <div class="progress">
+      <div class="progress__head">
+        <span class="progress__label">Enrichment FPEDIA</span>
+        <span class="progress__value">{{fpediaProgress.attempted}} / {{fpediaProgress.identified}} &middot; {{fpediaProgress.percentComplete}}%</span>
+      </div>
+      <div class="progress__bar"><div class="progress__fill" style="width:{{fpediaProgress.percentComplete}}%"></div></div>
+      <div class="progress__breakdown">
+        <span class="progress__stat progress__stat--success">{{fpediaProgress.success}} completati</span>
+        <span class="progress__stat progress__stat--warning">{{fpediaProgress.needsReview}} da rivedere</span>
+        <span class="progress__stat progress__stat--danger">{{fpediaProgress.failedRetryable}} falliti</span>
+        <span class="progress__stat progress__stat--muted">{{fpediaProgress.notFound}} non trovati</span>
+        {{#unless fpediaProgress.complete}}<span class="progress__stat progress__stat--muted">{{fpediaProgress.pending}} in coda</span>{{/unless}}
+      </div>
+      {{#if fpediaProgress.unmatched}}<p class="progress__note"><span class="status-pill status-pill--NONE">{{fpediaProgress.unmatched}} assenti da FPEDIA</span> non sono ancora pubblicati sull'indice FPEDIA: non possono essere arricchiti da nessun batch finché non compaiono lì, non sono "in coda".</p>{{/if}}
+    </div>
+  </div>
+  <p class="toolbar-label">Sincronizzazione dati</p>
+  <div class="admin-toolbar">
+    <form method="post" action="/setup/fpedia/enrich/full" class="admin-toolbar__form">
+      <fanta-button type="submit" variant="outline">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.6-6.4M21 4v6h-6"/></svg>
+        Avvia enrichment FPEDIA
+      </fanta-button>
+    </form>
+    <form method="post" action="/setup/fpedia/enrich/stale" class="admin-toolbar__form">
+      <fanta-button type="submit" variant="outline">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.6-6.4M21 4v6h-6"/></svg>
+        Aggiorna FPEDIA stale
+      </fanta-button>
+    </form>
+    <form method="post" action="/setup/fpedia/enrich/retry-failed" class="admin-toolbar__form">
+      <fanta-button type="submit" variant="outline">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.6-6.4M21 4v6h-6"/></svg>
+        Riprova FPEDIA falliti
+      </fanta-button>
+    </form>
+    <form method="post" action="/setup/season-stats/import" class="admin-toolbar__form">
+      <fanta-button type="submit" variant="outline">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 8l5-5 5 5M5 21h14"/></svg>
+        Importa statistiche giornata
+      </fanta-button>
+    </form>
+    <form method="post" action="/setup/indicators/recalculate" class="admin-toolbar__form">
+      <fanta-button type="submit" variant="outline">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg>
+        Ricalcola indicatori
+      </fanta-button>
+    </form>
+  </div>
+
+  <p class="toolbar-label toolbar-label--danger">Snapshot &mdash; irreversibile</p>
+  <div class="admin-toolbar">
+    <form method="post" action="/setup/snapshots/post-market-baseline" class="admin-toolbar__form" onsubmit="return confirm('Creare uno snapshot POST_MARKET_BASELINE? Una volta creato non può essere modificato.');">
+      <fanta-button type="submit" variant="outline" tone="danger">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7l1.5-3h5L16 7"/><circle cx="12" cy="13.5" r="3.2"/></svg>
+        Crea POST_MARKET_BASELINE
+      </fanta-button>
+    </form>
+    <form method="post" action="/setup/snapshots/auction-snapshot" class="admin-toolbar__form" onsubmit="return confirm('Creare un AUCTION_SNAPSHOT? Una volta creato non può essere modificato.');">
+      <fanta-button type="submit" variant="outline" tone="danger">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7l1.5-3h5L16 7"/><circle cx="12" cy="13.5" r="3.2"/></svg>
+        Crea AUCTION_SNAPSHOT
+      </fanta-button>
+    </form>
+  </div>
+</section>

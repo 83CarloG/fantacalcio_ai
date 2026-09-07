@@ -1,0 +1,33 @@
+<section class="page-heading">
+  <div><p class="eyebrow">Asta {{season}}</p><h1>Andamento</h1><p>Chi ha preso cosa, e quanto resta a ciascuno.</p></div>
+  <a class="panel__link" href="/live">&larr; Torna all'asta</a>
+</section>
+
+{{#if hasManagers}}
+{{#each managers}}
+<section class="panel">
+  <div class="panel__header">
+    <h2>{{this.name}}{{#if this.isOwner}} <span class="status-pill status-pill--SUCCESS"><span class="status-pill__dot"></span>Io</span>{{/if}}</h2>
+    <span class="panel__link">{{this.remaining}} cr residui</span>
+  </div>
+  {{#if this.picks.length}}
+  <table class="data-table">
+    <thead><tr><th>Giocatore</th><th>Ruolo</th><th>Prezzo</th></tr></thead>
+    <tbody>
+    {{#each this.picks}}
+      <tr>
+        <td>{{this.playerName}}</td>
+        <td><fanta-badge tone="{{this.playerRole}}">{{this.playerRole}}</fanta-badge></td>
+        <td class="run-line__detail">{{this.price}} cr</td>
+      </tr>
+    {{/each}}
+    </tbody>
+  </table>
+  {{else}}
+  <p class="panel__hint">Nessun giocatore ancora.</p>
+  {{/if}}
+</section>
+{{/each}}
+{{else}}
+<p class="panel__hint">Nessun manager registrato ancora.</p>
+{{/if}}

@@ -1,0 +1,69 @@
+<section class="page-heading">
+  <div><p class="eyebrow">{{player.team}}</p><h1>{{player.name}} <fanta-badge tone="{{player.role}}">{{player.role}}</fanta-badge></h1></div>
+  <div style="display:flex;gap:var(--fanta-space-3);align-items:center">
+    <span class="target-status">{{#if isTarget}}★ Nel mirino{{/if}}</span>
+    <a class="panel__link" href="/live">&larr; Torna all'asta</a>
+  </div>
+</section>
+
+{{#unless hasOwner}}
+<p class="flash flash--warning">Nessun manager "io" impostato — vai su <a href="/auction/live">Gestione asta</a> e premi "Sono io" su un manager prima di poter entrare in asta.</p>
+{{/unless}}
+
+{{#if summary}}
+<section class="panel">
+  <div class="panel__header"><h2>Indicatori</h2></div>
+  <div class="kv-grid">
+    <div class="kv-row"><span class="kv-row__label">Technical score</span><span class="kv-row__value">{{#if (eq summary.technicalScore null)}}—{{else}}{{summary.technicalScore}}{{/if}}</span></div>
+    <div class="kv-row"><span class="kv-row__label">Risk score</span><span class="kv-row__value">{{#if (eq summary.riskScore null)}}—{{else}}{{summary.riskScore}}{{/if}}</span></div>
+    <div class="kv-row"><span class="kv-row__label">Prezzo atteso</span><span class="kv-row__value">{{#if (eq summary.expectedPrice null)}}—{{else}}{{summary.expectedPrice}} cr{{/if}}</span></div>
+    <div class="kv-row"><span class="kv-row__label">Intervallo</span><span class="kv-row__value">{{#if summary.range}}{{summary.range.low}}&ndash;{{summary.range.high}} cr{{else}}—{{/if}}</span></div>
+    <div class="kv-row"><span class="kv-row__label">VORP</span><span class="kv-row__value">{{#if (eq summary.vorp null)}}—{{else}}{{summary.vorp}}{{/if}}</span></div>
+    <div class="kv-row"><span class="kv-row__label">Fascia</span><span class="kv-row__value">{{#if (eq summary.tier null)}}—{{else}}{{summary.tier}}{{/if}}</span></div>
+    <div class="kv-row"><span class="kv-row__label">Scarsità</span><span class="kv-row__value">{{#if (eq summary.scarcityIndex null)}}—{{else}}{{summary.scarcityIndex}}{{/if}}</span></div>
+    <div class="kv-row"><span class="kv-row__label">Confidenza</span><span class="kv-row__value">{{#if summary.confidence}}{{confidenceLabel summary.confidence}}{{else}}—{{/if}}</span></div>
+  </div>
+</section>
+{{else}}
+<p class="flash flash--warning">Dati non ancora disponibili per questo giocatore: è in attesa di arricchimento FPEDIA. Puoi comunque registrare l'aggiudicazione, ma senza consiglio rilancio/fermati.</p>
+{{/if}}
+
+{{#if hasOwner}}
+<section class="panel call-panel">
+  <button type="button" id="whistle-btn" class="whistle-btn" data-player-id="{{player.player_id}}">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="15" r="6"/><path d="M9 9V6a2 2 0 0 1 2-2h9v4h-6"/><path d="M15 8a2 2 0 1 0 0 4"/></svg>
+    Entro in asta
+  </button>
+
+  <div id="bid-tracker" class="bid-tracker" hidden>
+    <div class="bid-tracker__row">
+      <label>Prezzo attuale (cr)<input type="number" id="current-bid" min="1" step="1" value="1"></label>
+      <button type="button" id="bid-plus1" class="fanta-plus1-btn">+1</button>
+    </div>
+    <div id="bid-verdict" class="bid-verdict" aria-live="polite"></div>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="panel__header"><h2>Chiudi la chiamata</h2></div>
+  <div class="admin-toolbar">
+    <form method="post" action="/live/picks" id="win-form">
+      <input type="hidden" name="playerId" value="{{player.player_id}}">
+      <input type="hidden" name="managerId" value="{{owner.id}}">
+      <input type="hidden" name="price" id="win-price" value="1">
+      <fanta-button type="submit">Ho vinto io</fanta-button>
+    </form>
+    <form method="post" action="/live/picks" class="form-grid" style="display:inline-flex;gap:var(--fanta-space-2);align-items:center">
+      <input type="hidden" name="playerId" value="{{player.player_id}}">
+      <select name="managerId" required>
+        {{#each managers}}{{#unless this.isOwner}}<option value="{{this.id}}">{{this.name}}</option>{{/unless}}{{/each}}
+      </select>
+      <input type="number" name="price" min="1" step="1" placeholder="Prezzo" required style="width:100px">
+      <fanta-button type="submit" variant="outline">Vinto da un altro</fanta-button>
+    </form>
+    <form method="post" action="/live/turn/advance">
+      <fanta-button type="submit" variant="outline" tone="danger">Nessuno se lo aggiudica</fanta-button>
+    </form>
+  </div>
+</section>
+{{/if}}

@@ -1,0 +1,70 @@
+<section class="page-heading">
+  <div><p class="eyebrow">Tocca a te chiamare</p><h1>Cosa chiamo?</h1><p>La mia lista, esche per drenare budget avversario, scarsità per ruolo — in ordine di chiamata P&rarr;D&rarr;C&rarr;A.</p></div>
+  <a class="panel__link" href="/live">&larr; Torna all'asta</a>
+</section>
+
+<section class="panel">
+  <div class="panel__header"><h2>Scarsità per ruolo</h2></div>
+  <p class="panel__hint">Quanti giocatori di fascia buona (tier 1-3) restano ancora liberi.{{#if currentPhaseLabel}} Fase attuale: <strong>{{currentPhaseLabel}}</strong>.{{else}} Tutti i ruoli sono esauriti.{{/if}}</p>
+  <div class="progress__breakdown">
+    {{#each scarcityByRole}}
+    <span class="progress__stat{{#if this.isCurrentPhase}} progress__stat--success{{/if}}">{{this.goodAvailable}} {{this.label}}{{#if this.isCurrentPhase}} (fase attuale){{/if}}</span>
+    {{/each}}
+  </div>
+</section>
+
+<section class="panel">
+  <div class="panel__header"><h2>La mia lista</h2></div>
+  <p class="panel__hint">Sola consultazione — la lista si costruisce in Gestione asta. Giocatori ancora liberi, raggruppati per ruolo nell'ordine in cui vengono chiamati.</p>
+  {{#if targetsByRole.length}}
+  {{#each targetsByRole}}
+  <details class="panel__group"{{#if this.isCurrentPhase}} open{{/if}}>
+    <summary>{{this.label}} ({{this.players.length}}){{#if this.isCurrentPhase}} &middot; fase attuale{{/if}}</summary>
+    <table class="data-table">
+      <thead><tr><th>Giocatore</th><th>VORP</th><th>Fascia</th><th>Prezzo atteso</th><th></th></tr></thead>
+      <tbody>
+      {{#each this.players}}
+        <tr>
+          <td>{{this.name}}</td>
+          <td class="run-line__detail">{{this.indicators.vorp}}</td>
+          <td class="run-line__detail">{{this.indicators.tier}}</td>
+          <td class="run-line__detail">{{this.indicators.expectedPrice}} cr</td>
+          <td><a class="panel__link" href="/live/call/{{this.player_id}}">Chiama &rarr;</a></td>
+        </tr>
+      {{/each}}
+      </tbody>
+    </table>
+  </details>
+  {{/each}}
+  {{else}}
+  <p class="panel__hint">Lista vuota — costruiscila in Gestione asta prima dell'asta.</p>
+  {{/if}}
+</section>
+
+<section class="panel">
+  <div class="panel__header"><h2>Esche consigliate</h2></div>
+  <p class="panel__hint">Giocatori buoni ma non nel tuo mirino — chiamali per far spendere gli avversari, non i tuoi soldi.</p>
+  {{#if decoysByRole.length}}
+  {{#each decoysByRole}}
+  <details class="panel__group"{{#if this.isCurrentPhase}} open{{/if}}>
+    <summary>{{this.label}} ({{this.players.length}}){{#if this.isCurrentPhase}} &middot; fase attuale{{/if}}</summary>
+    <table class="data-table">
+      <thead><tr><th>Giocatore</th><th>VORP</th><th>Fascia</th><th>Prezzo atteso</th><th></th></tr></thead>
+      <tbody>
+      {{#each this.players}}
+        <tr>
+          <td>{{this.name}}</td>
+          <td class="run-line__detail">{{this.indicators.vorp}}</td>
+          <td class="run-line__detail">{{this.indicators.tier}}</td>
+          <td class="run-line__detail">{{this.indicators.expectedPrice}} cr</td>
+          <td><a class="panel__link" href="/live/call/{{this.player_id}}">Chiama &rarr;</a></td>
+        </tr>
+      {{/each}}
+      </tbody>
+    </table>
+  </details>
+  {{/each}}
+  {{else}}
+  <p class="panel__hint">Nessuna esca disponibile al momento.</p>
+  {{/if}}
+</section>

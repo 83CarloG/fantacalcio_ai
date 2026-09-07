@@ -1,23 +1,31 @@
 :root {
-  --fanta-color-bg:#f5f7fb;
-  --fanta-color-surface:#ffffff;
-  --fanta-color-text:#172033;
-  --fanta-color-muted:#667085;
-  --fanta-color-primary:#2457d6;
-  --fanta-color-primary-hover:#1c46b3;
-  --fanta-color-success:#147a4a;
-  --fanta-color-warning:#a15c00;
-  --fanta-color-danger:#b42318;
-  --fanta-color-border:#e4e7ec;
+  --fanta-color-bg:oklch(0.13 0.02 280);
+  --fanta-color-surface:oklch(0.175 0.026 280);
+  --fanta-color-text:oklch(0.95 0.008 280);
+  --fanta-color-muted:oklch(0.66 0.02 280);
+  --fanta-color-primary:oklch(0.72 0.19 340);
+  --fanta-color-primary-hover:oklch(0.66 0.19 340);
+  /* text/icon color for content painted ON TOP of a --fanta-color-primary fill (e.g. button
+     labels): primary is a bright neon accent, so on-primary is a dark ink, not the page's
+     near-white text token — keep this separate from --fanta-color-text/-surface, which are
+     both near the dark end of the palette in this theme and would be invisible on primary. */
+  --fanta-color-on-primary:oklch(0.13 0.02 280);
+  --fanta-color-success:oklch(0.75 0.16 150);
+  --fanta-color-warning:oklch(0.80 0.16 80);
+  --fanta-color-danger:oklch(0.70 0.19 25);
+  --fanta-color-border:oklch(0.32 0.045 280);
+  --fanta-color-border-soft:oklch(0.245 0.035 280);
   --fanta-space-1:4px; --fanta-space-2:8px; --fanta-space-3:12px; --fanta-space-4:16px; --fanta-space-5:20px; --fanta-space-6:24px; --fanta-space-8:32px;
-  --fanta-radius-sm:6px; --fanta-radius-md:10px; --fanta-radius-lg:14px;
-  --fanta-shadow-sm:0 1px 3px rgba(16,24,40,.08);
+  --fanta-radius-sm:2px; --fanta-radius-md:3px; --fanta-radius-lg:4px;
+  --fanta-shadow-sm:0 2px 8px rgba(0,0,0,.35);
   --fanta-icon-size-md:24px; --fanta-badge-height:24px; --fanta-search-height:40px; --fanta-stat-card-min-height:110px;
   --fanta-layout-max:1200px; --fanta-header-height:64px; --fanta-card-min-width:190px; --fanta-page-gutter:32px; --fanta-letter-spacing-wide:.08em;
 }
 
 :root {
-  --fanta-font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --fanta-font-family:Rajdhani,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --fanta-font-family-display:"Chakra Petch",var(--fanta-font-family);
+  --fanta-font-family-mono:"JetBrains Mono",ui-monospace,"Consolas",monospace;
   --fanta-font-size-xs:12px; --fanta-font-size-sm:14px; --fanta-font-size-md:16px; --fanta-font-size-xl:24px; --fanta-font-size-2xl:34px;
   --fanta-font-weight-medium:600; --fanta-font-weight-bold:750;
 }
